@@ -1,11 +1,12 @@
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 /**
- * User
+ * Client
  */
 public class Client {
     public static void main(String args[]) throws IOException {
@@ -14,9 +15,9 @@ public class Client {
         DatagramSocket socket;
         InetAddress IPAddress;
         DatagramPacket senPacket, recPacket;
-        int id, flags, ques, ansrr, authrr, addrr;
         String input, recMessage;
         byte[] inputBytes, recBytes;
+
 
         recBytes = new byte[1024];
         scan = new Scanner(System.in);
@@ -24,8 +25,8 @@ public class Client {
         IPAddress = InetAddress.getLocalHost();
         input = scan.nextLine();
         inputBytes = input.getBytes();
-        senPacket = new DatagramPacket(inputBytes, input.length(), IPAddress, 62223);
         recPacket = new DatagramPacket(recBytes, recBytes.length);
+        senPacket = createDNSRequestPacket(IPAddress,62223, inputBytes);
 
 
         socket.send(senPacket);
@@ -36,36 +37,85 @@ public class Client {
 
         socket.close();
     }
-    public static DatagramPacket createDNSRequestPacket(){
-        ArrayList<Byte> content;
+
+    public static DatagramPacket createDNSRequestPacket(InetAddress IPAddress, int port, byte[] inputBytes){
+        byte content[];
         DatagramPacket packet;
         Random r;
 
         r = new Random();
-        content = new ArrayList<>();
-        int id, flags, ques, ansrr, authrr, addrr;
-        ques = 1; ansrr = 0; authrr = 0; addrr = 0;
+        content = new byte[0];
+        int id, flags, ques, ansrr, authrr, addrr, end;
+        ques = 1; ansrr = 0; authrr = 0; addrr = 0; end = 1;
 
         id = r.nextInt(65536);
         //System.out.println("id=" + Integer.toBinaryString(id));
         flags = 0x0100;
         //System.out.println("flags=" + Integer.toBinaryString(flags));
-        id = id << 16;
+        id <<= 16;
         //System.out.println("id(pb)=" + Integer.toBinaryString(id));
-        id = id | flags;
+        id |= flags;
         //System.out.println("line1=" + Integer.toBinaryString(line1));
 
-        ques = ques << 16;
-        ques = ques | ansrr;
-        authrr = authrr << 16;
-        authrr = authrr | addrr;
-
-        content
+        content = addBytes(content, getByteFromInt(id));
 
 
+        ques <<= 16;
+        ques |= ansrr;
+        content = addBytes(content, getByteFromInt(ques));
+
+        authrr <<= 16;
+        authrr |= addrr;
+        content = addBytes(content, getByteFromInt(authrr));
+
+        content = addBytes(content, inputBytes);
+
+        end <<= 16;
+        end |= 1;
+        content = addBytes(content, getByteFromInt(end));
+
+        // Print the bytes in binary
+        for(int i = 0; i < content.length; i++){
+            System.out.println("byte[" + i + "] = " + Integer.toBinaryString((content[i] & 0xFF) + 0x100).substring(1));
+        }
+        //*/
+        packet = new DatagramPacket(content, content.length, IPAddress,port);
+
+        return packet;
+
+    }
+
+    public static byte[] addBytes(byte[] content, byte[] toAdd){
+        byte[] toRet = new byte[content.length + toAdd.length];
+        for(int i = 0; i < content.length; i++){
+            toRet[i] = content[i];
+        }
+        for(int i = 0; i < toAdd.length; i++){
+            toRet[i+content.length] = toAdd[i];
+        }
+        return toRet;
+    }
+
+    public static byte[] addByte(byte[] content, byte toAdd){
+        byte[] toRet = new byte[content.length + 1];
+        for(int i = 0; i < content.length; i++){
+            toRet[i] = content[i];
+        }
+        toRet[content.length] = toAdd;
+        return toRet;
+    }
 
 
 
-
+    public static byte[] getByteFromInt(int input){
+        byte[] conv = new byte[4];
+        conv[3] = (byte)(input & 0xff);
+        input >>= 8;
+        conv[2] = (byte)(input & 0xff);
+        input >>= 8;
+        conv[1] = (byte)(input & 0xff);
+        input >>= 8;
+        conv[0] = (byte) input;
+        return conv;
     }
 }
