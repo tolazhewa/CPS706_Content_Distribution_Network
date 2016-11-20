@@ -1,33 +1,36 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
  * Client
  */
 public class Client {
+    /**
+     * main function for the Client
+     * @param args usable arguments
+     * @throws IOException accounts IO Errors
+     */
     public static void main(String args[]) throws IOException {
-
         Scanner scan;
         DatagramSocket socket;
         InetAddress IPAddress;
         DatagramPacket senPacket, recPacket;
         String input, recMessage;
-        byte[] inputBytes, recBytes;
-
+        byte[] recBytes;
+        DNSQuery query;
 
         recBytes = new byte[1024];
         scan = new Scanner(System.in);
         socket = new DatagramSocket();
         IPAddress = InetAddress.getLocalHost();
         input = scan.nextLine();
-        inputBytes = input.getBytes();
-        recPacket = new DatagramPacket(recBytes, recBytes.length);
-        senPacket = createDNSRequestPacket(IPAddress,62223, inputBytes);
+        query = new DNSQuery(input, "A");
 
+        System.out.println(query);
+
+        recPacket = new DatagramPacket(recBytes, recBytes.length);
+        senPacket = query.getPacket(IPAddress,62223);
 
         socket.send(senPacket);
         socket.receive(recPacket);
@@ -38,14 +41,15 @@ public class Client {
         socket.close();
     }
 
+/*
     public static DatagramPacket createDNSRequestPacket(InetAddress IPAddress, int port, byte[] inputBytes){
         byte content[];
         DatagramPacket packet;
         Random r;
+        int id, flags, ques, ansrr, authrr, addrr, end;
 
         r = new Random();
         content = new byte[0];
-        int id, flags, ques, ansrr, authrr, addrr, end;
         ques = 1; ansrr = 0; authrr = 0; addrr = 0; end = 1;
 
         id = r.nextInt(65536);
@@ -78,7 +82,7 @@ public class Client {
         for(int i = 0; i < content.length; i++){
             System.out.println("byte[" + i + "] = " + Integer.toBinaryString((content[i] & 0xFF) + 0x100).substring(1));
         }
-        //*/
+        //
         packet = new DatagramPacket(content, content.length, IPAddress,port);
 
         return packet;
@@ -118,4 +122,5 @@ public class Client {
         conv[0] = (byte) input;
         return conv;
     }
+*/
 }
