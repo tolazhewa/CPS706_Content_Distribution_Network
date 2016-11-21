@@ -44,6 +44,7 @@ public class Question {
             case "NS": return 2;
             case "CNAME": return 5;
             case "SOA": return 6;
+            case "R": return 9;
             case "MX": return 15;
             case "AAAA": return 26;
             default: System.out.println("Unknown Type"); return 0;

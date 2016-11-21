@@ -1,4 +1,7 @@
+package Hosts;
+
 import DNS.DNSQuery;
+import HTTP.HTTPGet;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -7,11 +10,11 @@ import java.net.InetAddress;
 import java.util.Scanner;
 
 /**
- * Client
+ * Hosts.ClientPC
  */
-public class Client {
+public class ClientPC {
     /**
-     * main function for the Client
+     * main function for the Hosts.ClientPC
      * @param args usable arguments
      * @throws IOException accounts IO Errors
      */
@@ -23,18 +26,21 @@ public class Client {
         String input, recMessage;
         byte[] recBytes;
         DNSQuery query;
+        HTTPGet hGet;
 
         recBytes = new byte[1024];
         scan = new Scanner(System.in);
         socket = new DatagramSocket();
         IPAddress = InetAddress.getLocalHost();
         input = scan.nextLine();
+        hGet = new HTTPGet(input);
+
         query = new DNSQuery(input, "A");
 
-        System.out.println(query);
+        System.out.println(hGet);
 
         recPacket = new DatagramPacket(recBytes, recBytes.length);
-        senPacket = query.getPacket(IPAddress,62223);
+        senPacket = new DatagramPacket(hGet.getBytes(),hGet.getBytes().length,IPAddress,62223);
 
         socket.send(senPacket);
         socket.receive(recPacket);

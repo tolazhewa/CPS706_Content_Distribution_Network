@@ -1,5 +1,8 @@
+package Hosts;
+
 import DNS.DNSQuery;
 import DNS.Record;
+import HTTP.HTTPGet;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,9 +14,9 @@ import java.util.Scanner;
 /**
  * Local Domain Name Server
  */
-public class LDNS {
+public class ClientLocalDNS {
 
-    public static ArrayList<Record> records; //list of records
+    private static ArrayList<Record> records; //list of records
 
     /**
      * main method to run the dummy Local DNS server
@@ -25,6 +28,7 @@ public class LDNS {
 
         DatagramSocket serverSocket;
         DNSQuery query;
+        HTTPGet hGet;
         byte[] receiveData, sendData;
         String message, addition;
         InetAddress IP;
@@ -41,8 +45,8 @@ public class LDNS {
         while(true) {
             receivePacket = new DatagramPacket(receiveData, receiveData.length);
             serverSocket.receive(receivePacket);
-            query = new DNSQuery(receivePacket.getData());
-            System.out.println(query);
+            hGet = new HTTPGet(receivePacket.getData());
+            System.out.println(hGet);
             //message = new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
             //IP = receivePacket.getAddress();
             //port = receivePacket.getPort();
@@ -61,7 +65,7 @@ public class LDNS {
 
 
     /**
-     * adds all the preloaded records into the array
+     * adds all the preloaded records into the ArrayList
      */
     public static void instantiate(){
         records = new ArrayList<>();

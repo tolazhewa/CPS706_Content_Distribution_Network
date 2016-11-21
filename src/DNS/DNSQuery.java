@@ -139,16 +139,13 @@ public class DNSQuery {
         content = addBytes(content,getByteFromShort(answerRRs));
         content = addBytes(content,getByteFromShort(authorityRRs));
         content = addBytes(content,getByteFromShort(additionalRRs));
-
-        for(int i = 0; i < this.questions; i++){
+        for(int i = 0; i < this.questions; i++) {
             content = addBytes(content,ques[i].getBytes());
         }
-
-        for(int i = 0; i < this.answerRRs; i++){
+        for(int i = 0; i < this.answerRRs; i++) {
             content = addBytes(content,ans[i].getBytes());
         }
-
-        for(int i = 0; i < this.authorityRRs; i++){
+        for(int i = 0; i < this.authorityRRs; i++) {
             content = addBytes(content,auth[i].getBytes());
         }
 
@@ -252,12 +249,9 @@ public class DNSQuery {
      */
     public int getIntFromFourBytes(byte one, byte two, byte three, byte four) {
         int toRet;
-        toRet = one;
-        toRet <<= 8;
-        toRet |= two;
-        toRet <<= 8;
-        toRet |= three;
-        toRet <<= 8;
+        toRet = one; toRet <<= 8;
+        toRet |= two; toRet <<= 8;
+        toRet |= three; toRet <<= 8;
         toRet |= four;
         return toRet;
     }
@@ -286,6 +280,7 @@ public class DNSQuery {
             case 2: return "NS";
             case 5: return "CNAME";
             case 6: return "SOA";
+            case 9: return "R";
             case 15: return "MX";
             case 26: return "AAAA";
             default: System.out.println("Unknown Value"); return "";
@@ -379,19 +374,19 @@ public class DNSQuery {
                 + "\nQueries:";
         for(int i = 0; i < getQuestions(); i++){
             toRet += "\n\tQuery #" + (i+1) + ": ";
-            toRet += "\n" + ques[i].toString();
+            toRet += "\n" + getQues()[i].toString();
         }
         if(getAnswerRRs() > 0)
             toRet += "\nAnswers:";
         for (short i = 0; i < getAnswerRRs(); i++) {
             toRet += "\n\tDNS.Answer #" + (i + 1) + ": ";
-            toRet += "\n" + ans[i].toString();
+            toRet += "\n" + getAns()[i].toString();
         }
         if(getAuthorityRRs() > 0)
             toRet += "\nAuthoritative Nameservers:";
         for (short i = 0; i < getAuthorityRRs(); i++) {
             toRet += "\n\tDNS.Authority #" + (i + 1) + ": ";
-            toRet += "\n" + auth[i].toString();
+            toRet += "\n" + getAuth()[i].toString();
         }
         return toRet;
     }
