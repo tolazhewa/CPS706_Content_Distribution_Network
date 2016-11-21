@@ -1,5 +1,7 @@
+package DNS;
+
 /**
- * Answer response class
+ * DNS.Answer response class
  */
 public class Answer {
     String name;
@@ -25,6 +27,38 @@ public class Answer {
         this.TTL = TTL;
         this.dataLength = dataLength;
         this.value = value;
+    }
+
+    /**
+     * gets 4 byte array representation of an integer
+     *
+     * @param input integer
+     * @return 4 byte array
+     */
+    public static byte[] getByteFromInt(int input) {
+        byte[] conv = new byte[4];
+        conv[3] = (byte) (input & 0xff);
+        input >>= 8;
+        conv[2] = (byte) (input & 0xff);
+        input >>= 8;
+        conv[1] = (byte) (input & 0xff);
+        input >>= 8;
+        conv[0] = (byte) input;
+        return conv;
+    }
+
+    /**
+     * adds a byte to an array of bytes
+     *
+     * @param content array of bytes
+     * @param toAdd   byte to add
+     * @return array of bytes including toAdd
+     */
+    public static byte[] addByte(byte[] content, byte toAdd) {
+        byte[] toRet = new byte[content.length + 1];
+        System.arraycopy(content, 0, toRet, 0, content.length);
+        toRet[content.length] = toAdd;
+        return toRet;
     }
 
     /**
@@ -85,27 +119,8 @@ public class Answer {
      */
     public byte[] addBytes(byte[] content, byte[] toAdd) {
         byte[] toRet = new byte[content.length + toAdd.length];
-        for(int i = 0; i < content.length; i++){
-            toRet[i] = content[i];
-        }
-        for(int i = 0; i < toAdd.length; i++){
-            toRet[i+content.length] = toAdd[i];
-        }
-        return toRet;
-    }
-
-    /**
-     * adds a byte to an array of bytes
-     * @param content array of bytes
-     * @param toAdd byte to add
-     * @return array of bytes including toAdd
-     */
-    public static byte[] addByte(byte[] content, byte toAdd){
-        byte[] toRet = new byte[content.length + 1];
-        for(int i = 0; i < content.length; i++) {
-            toRet[i] = content[i];
-        }
-        toRet[content.length] = toAdd;
+        System.arraycopy(content, 0, toRet, 0, content.length);
+        System.arraycopy(toAdd, 0, toRet, content.length, toAdd.length);
         return toRet;
     }
 
@@ -119,23 +134,6 @@ public class Answer {
             return 1;
         System.out.println("Unknown Class");
         return 0;
-    }
-
-    /**
-     * gets 4 byte array representation of an integer
-     * @param input integer
-     * @return 4 byte array
-     */
-    public static byte[] getByteFromInt(int input){
-        byte[] conv = new byte[4];
-        conv[3] = (byte)(input & 0xff);
-        input >>= 8;
-        conv[2] = (byte)(input & 0xff);
-        input >>= 8;
-        conv[1] = (byte)(input & 0xff);
-        input >>= 8;
-        conv[0] = (byte) input;
-        return conv;
     }
 
     /**

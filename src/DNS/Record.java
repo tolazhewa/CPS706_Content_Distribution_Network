@@ -1,3 +1,5 @@
+package DNS;
+
 /**
  * A class to hold records
  */

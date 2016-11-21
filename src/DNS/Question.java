@@ -1,5 +1,7 @@
+package DNS;
+
 /**
- * Question query class
+ * DNS.Question query class
  */
 public class Question {
     private String name;
@@ -9,13 +11,26 @@ public class Question {
     /**
      * Contructor with all the information
      * @param name domain name server is looking up IP addresses for
-     * @param type
-     * @param qClass
+     * @param type type dns question
+     * @param qClass class of dns question
      */
     public Question(String name, String type, String qClass){
         this.name = name;
         this.type = type;
         this.qClass = qClass;
+    }
+
+    /**
+     * adds a byte to an array of bytes
+     * @param content array of bytes
+     * @param toAdd byte to add
+     * @return array of bytes including toAdd
+     */
+    public static byte[] addByte(byte[] content, byte toAdd) {
+        byte[] toRet = new byte[content.length + 1];
+        System.arraycopy(content, 0, toRet, 0, content.length);
+        toRet[content.length] = toAdd;
+        return toRet;
     }
 
     /**
@@ -83,27 +98,8 @@ public class Question {
      */
     public byte[] addBytes(byte[] content, byte[] toAdd) {
         byte[] toRet = new byte[content.length + toAdd.length];
-        for(int i = 0; i < content.length; i++){
-            toRet[i] = content[i];
-        }
-        for(int i = 0; i < toAdd.length; i++){
-            toRet[i+content.length] = toAdd[i];
-        }
-        return toRet;
-    }
-
-    /**
-     * adds a byte to an array of bytes
-     * @param content array of bytes
-     * @param toAdd byte to add
-     * @return array of bytes including toAdd
-     */
-    public static byte[] addByte(byte[] content, byte toAdd){
-        byte[] toRet = new byte[content.length + 1];
-        for(int i = 0; i < content.length; i++){
-            toRet[i] = content[i];
-        }
-        toRet[content.length] = toAdd;
+        System.arraycopy(content, 0, toRet, 0, content.length);
+        System.arraycopy(toAdd, 0, toRet, content.length, toAdd.length);
         return toRet;
     }
 

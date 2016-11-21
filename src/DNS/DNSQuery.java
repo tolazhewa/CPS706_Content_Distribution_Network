@@ -1,9 +1,11 @@
+package DNS;
+
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.Random;
 
 /**
- * DNSQuery class embodies DNS packets and contains all the information from a DNS
+ * DNS.DNSQuery class embodies DNS packets and contains all the information from a DNS
  * packet in it
  */
 public class DNSQuery {
@@ -180,9 +182,7 @@ public class DNSQuery {
 
         answerRRs++;
         answer = new Answer[answerRRs];
-        for(int i = 0; i < answerRRs-1; i++){
-            answer[i] = ans[i];
-        }
+        System.arraycopy(ans, 0, answer, 0, answerRRs - 1);
         answer[answerRRs - 1] = new Answer(name,type,aClass,TTL,dataLength,value);
         ans = answer;
 
@@ -206,9 +206,8 @@ public class DNSQuery {
 
         authorityRRs++;
         authority = new Authority[authorityRRs];
-        for(int i = 0; i < answerRRs-1; i++){
-            authority[i] = auth[i];
-        }
+
+        System.arraycopy(auth, 0, authority, 0, authorityRRs - 1);
         authority[answerRRs - 1] = new Authority(name,type,aClass,TTL,dataLength,value);
         auth = authority;
 
@@ -222,14 +221,10 @@ public class DNSQuery {
      * @param toAdd to add
      * @return combination of both
      */
-    public byte[] addBytes(byte[] content, byte[] toAdd){
+    public byte[] addBytes(byte[] content, byte[] toAdd) {
         byte[] toRet = new byte[content.length + toAdd.length];
-        for(int i = 0; i < content.length; i++){
-            toRet[i] = content[i];
-        }
-        for(int i = 0; i < toAdd.length; i++){
-            toRet[i+content.length] = toAdd[i];
-        }
+        System.arraycopy(content, 0, toRet, 0, content.length);
+        System.arraycopy(toAdd, 0, toRet, content.length, toAdd.length);
         return toRet;
     }
 
@@ -376,10 +371,10 @@ public class DNSQuery {
      */
     public String toString(){
         String toRet = "Transaction ID: " + getTransactionID()
-                + "\nFlags: " + String.format("%16s", Integer.toBinaryString(flags)).replace(' ', '0')
+                + "\nFlags: " + String.format("%16s", Integer.toBinaryString(getFlags())).replace(' ', '0')
                 + "\nQuestios: " + getQuestions()
-                + "\nAnswer RRs: " + getAnswerRRs()
-                + "\nAuthority RRs: " + getAuthorityRRs()
+                + "\nDNS.Answer RRs: " + getAnswerRRs()
+                + "\nDNS.Authority RRs: " + getAuthorityRRs()
                 + "\nAdditional RRs: " + getAdditionalRRs()
                 + "\nQueries:";
         for(int i = 0; i < getQuestions(); i++){
@@ -388,14 +383,14 @@ public class DNSQuery {
         }
         if(getAnswerRRs() > 0)
             toRet += "\nAnswers:";
-        for(int i = 0; i < getAnswerRRs(); i++){
-            toRet += "\n\tAnswer #" + (i+1) + ": ";
+        for (short i = 0; i < getAnswerRRs(); i++) {
+            toRet += "\n\tDNS.Answer #" + (i + 1) + ": ";
             toRet += "\n" + ans[i].toString();
         }
         if(getAuthorityRRs() > 0)
             toRet += "\nAuthoritative Nameservers:";
-        for(int i = 0; i < getAuthorityRRs(); i++){
-            toRet += "\n\tAuthority #" + (i+1) + ": ";
+        for (short i = 0; i < getAuthorityRRs(); i++) {
+            toRet += "\n\tDNS.Authority #" + (i + 1) + ": ";
             toRet += "\n" + auth[i].toString();
         }
         return toRet;
