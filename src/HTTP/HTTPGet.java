@@ -10,7 +10,7 @@ public class HTTPGet {
     private String url;
     private String version;
     private ArrayList<HeaderLine> headerLines;
-    private String data;
+    private byte[] data;
 
     /**
      * Constructor to initialize an HTTP GET request
@@ -19,7 +19,7 @@ public class HTTPGet {
      * @param version version of HTTP used
      * @param data any data to go alongside the header
      */
-    public HTTPGet(String method, String url, String version, String data){
+    public HTTPGet(String method, String url, String version, byte[] data){
         this.method = method;
         this.url = url;
         this.version = version;
@@ -38,7 +38,7 @@ public class HTTPGet {
         this.url = url;
         this.version = version;
         headerLines = new ArrayList<>();
-        data = "";
+        data = new byte[0];
     }
 
     /**
@@ -51,7 +51,7 @@ public class HTTPGet {
         this.url = url;
         this.version = "HTTP/1.1";
         headerLines = new ArrayList<>();
-        data = "";
+        data = new byte[0];
     }
 
     /**
@@ -63,9 +63,10 @@ public class HTTPGet {
         String n,v;
 
         headerLines = new ArrayList<>();
-        method = ""; url = ""; version = ""; data = ""; n = ""; v = "";
+        method = ""; url = ""; version = ""; n = ""; v = "";
+        data = new byte[0];
 
-        for(i = 0; (char)content[i] != ' '; i++) {
+        for(i=0; (char)content[i] != ' '; i++) {
             method += (char)content[i];
         }
         for(++i; (char)content[i] != ' '; i++) {
@@ -85,7 +86,7 @@ public class HTTPGet {
             n = ""; v = "";
         }
         for(i+=2; (char)content[i] != '\0'; i++){
-            data += (char)content[i];
+            data = addByte(data,content[i]);
         }
     }
 
@@ -114,7 +115,7 @@ public class HTTPGet {
         }
         content = addByte(content, (byte)'\r');
         content = addByte(content, (byte)'\n');
-        content = addBytes(content, getData().getBytes());
+        content = addBytes(content, getData());
 
         return content;
     }
@@ -157,8 +158,8 @@ public class HTTPGet {
         for(HeaderLine h: getHeaderLines()){
             a += h.toString();
         }
-        a += "\n\\r\\n";
-        a += getData();
+        a += "\n\\r\\n\n";
+        a += new String(this.getData());
         return a;
     }
 
@@ -198,7 +199,7 @@ public class HTTPGet {
      * returns any data attached to the request
      * @return data
      */
-    public String getData() {
+    public byte[] getData() {
         return data;
     }
 }

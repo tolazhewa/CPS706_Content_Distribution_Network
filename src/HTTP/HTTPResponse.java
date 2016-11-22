@@ -10,7 +10,7 @@ public class HTTPResponse {
     private String statusCode;
     private String responsePhrase;
     private ArrayList<HeaderLine> headerLines;
-    private String data;
+    private byte[] data;
 
     /**
      * constructor for HTTP response
@@ -24,6 +24,22 @@ public class HTTPResponse {
         this.statusCode = statusCode;
         this.responsePhrase = responsePhrase;
         headerLines = new ArrayList<>();
+        this.data = new byte[0];
+    }
+
+    /**
+     * constructor for HTTP response
+     *
+     * @param requestVersion request version of HTTP
+     * @param statusCode     status code (200, etc)
+     * @param responsePhrase response phrase with the status code
+     */
+    public HTTPResponse(String requestVersion, String statusCode, String responsePhrase, byte[] data) {
+        this.requestVersion = requestVersion;
+        this.statusCode = statusCode;
+        this.responsePhrase = responsePhrase;
+        this.headerLines = new ArrayList<>();
+        this.data = data;
     }
 
     /**
@@ -35,30 +51,23 @@ public class HTTPResponse {
         int i;
         String n, v;
 
-        requestVersion = "";
-        statusCode = "";
-        responsePhrase = "";
-        data += "";
-        n = "";
-        v = "";
+        headerLines = new ArrayList<>();
+        requestVersion = ""; statusCode = ""; responsePhrase = ""; n = ""; v = "";
+        data = new byte[0];
 
-        for (i = 0; (char) content[i] != ' '; i++) {
+        for (i=0; (char) content[i] != ' '; i++) {
             requestVersion += (char) content[i];
         }
-
-        for (i += 2; (char) content[i] != ' '; i++) {
+        for (++i; (char) content[i] != ' '; i++) {
             statusCode += (char) content[i];
         }
-
-        for (i += 2; (char) content[i] != '\r'; i++) {
+        for (++i; (char) content[i] != '\r'; i++) {
             responsePhrase += (char) content[i];
         }
-
-        for (i += 2; (char) content[i] == '\r' && (char) content[i + 1] == '\n'; i += 2) {
+        for (i+=2; !((char)content[i] == '\r' && (char)content[i + 1] == '\n'); i+=2) {
             for (; (char) content[i] != ':'; i++) {
                 n += (char) content[i];
             }
-
             for (i += 2; (char) content[i] != '\r'; i++) {
                 v += (char) content[i];
             }
@@ -66,10 +75,10 @@ public class HTTPResponse {
             n = "";
             v = "";
         }
-
-        for (i += 2; (char) content[i] != '\0'; i++) {
-            data += (char) content[i];
+        for (i+=2; (char) content[i] != '\0'; i++) {
+            data = addByte(this.data,content[i]);
         }
+        System.out.println("Data Length: " + getData().length);
     }
 
     /**
@@ -95,14 +104,14 @@ public class HTTPResponse {
         byte[] content;
 
         content = new byte[0];
-        content = addBytes(content, requestVersion.getBytes());
+        content = addBytes(content, getRequestVersion().getBytes());
         content = addByte(content, (byte) ' ');
-        content = addBytes(content, statusCode.getBytes());
+        content = addBytes(content, getStatusCode().getBytes());
         content = addByte(content, (byte) ' ');
-        content = addBytes(content, responsePhrase.getBytes());
+        content = addBytes(content, getResponsePhrase().getBytes());
         content = addByte(content, (byte) '\r');
         content = addByte(content, (byte) '\n');
-        for (HeaderLine a : headerLines) {
+        for (HeaderLine a : getHeaderLines()) {
             content = addBytes(content, a.getName().getBytes());
             content = addByte(content, (byte) ':');
             content = addByte(content, (byte) ' ');
@@ -112,7 +121,7 @@ public class HTTPResponse {
         }
         content = addByte(content, (byte) '\r');
         content = addByte(content, (byte) '\n');
-        content = addBytes(content, data.getBytes());
+        content = addBytes(content, getData());
 
         return content;
     }
@@ -144,8 +153,8 @@ public class HTTPResponse {
         for (HeaderLine h : this.getHeaderLines()) {
             a += h.getName() + ": " + h.getValue() + "\\r\\n";
         }
-        a += "\\r\\n";
-        a += this.getData();
+        a += "\n\\r\\n\n";
+        a += new String(this.getData());
         return a;
     }
 
@@ -190,7 +199,7 @@ public class HTTPResponse {
      *
      * @return data
      */
-    public String getData() {
+    public byte[] getData() {
         return data;
     }
 }

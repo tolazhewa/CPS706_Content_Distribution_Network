@@ -1,7 +1,8 @@
 package Hosts;
 
 /**
- * Content Server for hercdn.com
+ * HerCND.com's Web Server
  */
 public class HerWebServer {
+
 }

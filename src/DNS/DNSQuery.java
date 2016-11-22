@@ -2,6 +2,7 @@ package DNS;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Random;
 
 /**
@@ -127,7 +128,7 @@ public class DNSQuery {
      * @param port Destination port of the receiver
      * @return the datagram to send
      */
-    public DatagramPacket getPacket(InetAddress IPAddress, int port){
+    public DatagramPacket getPacket(String IPAddress, int port){
         DatagramPacket packet;
         byte content[];
 
@@ -149,7 +150,13 @@ public class DNSQuery {
             content = addBytes(content,auth[i].getBytes());
         }
 
-        packet = new DatagramPacket(content, content.length, IPAddress,port);
+        try {
+            packet = new DatagramPacket(content, content.length, InetAddress.getByName(IPAddress), port);
+        } catch (UnknownHostException e) {
+            System.out.println("Invalid IP Address");
+            e.printStackTrace();
+            return null;
+        }
         return packet;
     }
 

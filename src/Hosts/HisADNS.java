@@ -20,7 +20,5 @@ public class HisADNS {
     public static void instantiate(){
         records = new ArrayList<>();
         records.add(new Record("video.netcinema.com","herCDN.com","R"));
-        records.add(new Record("herCDN.com","www.herCDN.com","CName"));
-        records.add(new Record("www.herCDN.com", "127.0.0.1","A"));
     }
 }
