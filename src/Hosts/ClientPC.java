@@ -36,7 +36,6 @@ public class ClientPC {
         ArrayList<Link> links;
         String IP;
 
-
         indexHTML = getFileFromServer("index.html", HWS_IP, HWS_PORT);
         links = getLinksFromFile(indexHTML);
 
@@ -47,8 +46,6 @@ public class ClientPC {
         }
 
         System.out.println("All operations complete.\nGoodBye!");
-
-
     }
 
     public static String dnsLookup(String name){
@@ -91,9 +88,9 @@ public class ClientPC {
             while(fileScanner.hasNext()){
                 line = fileScanner.nextLine();
                 if(line.contains("http://")){
-                    line = line.substring(line.indexOf("http://") + 7);
+                    line = line.substring(line.indexOf("\"http://") + 8);
                     links.add(new Link(line.substring(0,line.indexOf('/')),
-                            line.substring(line.indexOf('/'), line.indexOf(' '))));
+                            line.substring(line.indexOf('/'), line.indexOf('\"'))));
                 }
             }
             return links;

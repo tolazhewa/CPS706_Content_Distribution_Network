@@ -78,7 +78,6 @@ public class HTTPResponse {
         for (i+=2; (char) content[i] != '\0'; i++) {
             data = addByte(this.data,content[i]);
         }
-        System.out.println("Data Length: " + getData().length);
     }
 
     /**

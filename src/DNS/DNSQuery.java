@@ -119,16 +119,11 @@ public class DNSQuery {
         }
     }
 
-
-
     /**
-     * Packages the entire DNS query into an array of bytes. Followed by
-     * creating the datagram packet to send
-     * @param IPAddress Destination IP address of the receiver
-     * @param port Destination port of the receiver
-     * @return the datagram to send
+     * return byte representation of the DNS query
+     * @return byte array
      */
-    public DatagramPacket getPacket(String IPAddress, int port){
+    public byte[] getBytes(){
         DatagramPacket packet;
         byte content[];
 
@@ -149,7 +144,20 @@ public class DNSQuery {
         for(int i = 0; i < this.authorityRRs; i++) {
             content = addBytes(content,auth[i].getBytes());
         }
+        return content;
+    }
 
+    /**
+     * Creates the datagram packet to send
+     * @param IPAddress Destination IP address of the receiver
+     * @param port Destination port of the receiver
+     * @return the datagram to send
+     */
+    public DatagramPacket getPacket(String IPAddress, int port){
+        DatagramPacket packet;
+        byte content[];
+
+        content = getBytes();
         try {
             packet = new DatagramPacket(content, content.length, InetAddress.getByName(IPAddress), port);
         } catch (UnknownHostException e) {

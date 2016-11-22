@@ -30,32 +30,33 @@ public class HisWebServer {
 
         receivedBytes = new byte[MAX_FILE_SIZE];
 
-        try {
-            serverSocket = new ServerSocket(PORT);
-            mySocket = serverSocket.accept();
+        while(true) {
+            try {
+                serverSocket = new ServerSocket(PORT);
+                mySocket = serverSocket.accept();
 
-            outStream = mySocket.getOutputStream();
-            inStream = mySocket.getInputStream();
+                outStream = mySocket.getOutputStream();
+                inStream = mySocket.getInputStream();
 
-            inStream.read(receivedBytes);
-            httpGet = new HTTPGet(receivedBytes);
+                inStream.read(receivedBytes);
+                httpGet = new HTTPGet(receivedBytes);
 
-            fileBytes = getFileBytes(httpGet.getUrl());
+                fileBytes = getFileBytes(httpGet.getUrl());
 
-            if(fileBytes == null)
-                httpResponse = new HTTPResponse("HTTP/1.1","404","Not Found");
-            else
-                httpResponse = new HTTPResponse("HTTP/1.1","200","OK",fileBytes);
+                if (fileBytes == null)
+                    httpResponse = new HTTPResponse("HTTP/1.1", "404", "Not Found");
+                else
+                    httpResponse = new HTTPResponse("HTTP/1.1", "200", "OK", fileBytes);
 
-            outStream.write(httpResponse.getBytes());
+                outStream.write(httpResponse.getBytes());
 
-            serverSocket.close();
-            mySocket.close();
-            outStream.close();
-            inStream.close();
-        }
-        catch(IOException e) {
-            System.out.println(e);
+                serverSocket.close();
+                mySocket.close();
+                outStream.close();
+                inStream.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
         }
     }
 
