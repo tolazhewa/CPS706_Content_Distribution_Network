@@ -2,42 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21126d95-e23f-4d14-9cf3-5c08ef2a630f" name="Default" comment="V1: all functionality required so far added&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/HTTP/Link.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/Hosts/HerHandleSocketRequest.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/Hosts/HisHandleSocketRequest.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/HTTP/Link.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/Production/ClientPCContents/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/Production/Misc/Link.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Misc/Link.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Answer.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Answer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Authority.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Authority.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/DNSQuery.class" afterPath="$PROJECT_DIR$/out/Production/DNS/DNSQuery.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Question.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Question.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Record.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Record.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/HTTPGet.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/HTTPGet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/HTTPResponse.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/HTTPResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/HeaderLine.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/HeaderLine.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/ClientLocalDNS.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/ClientLocalDNS.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/ClientPC.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/ClientPC.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HerADNS.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HerADNS.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HerWebServer.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HerWebServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HisADNS.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HisADNS.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HisWebServer.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HisWebServer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Answer.java" afterPath="$PROJECT_DIR$/src/DNS/Answer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Authority.java" afterPath="$PROJECT_DIR$/src/DNS/Authority.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/DNSQuery.java" afterPath="$PROJECT_DIR$/src/DNS/DNSQuery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Question.java" afterPath="$PROJECT_DIR$/src/DNS/Question.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Record.java" afterPath="$PROJECT_DIR$/src/DNS/Record.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HTTP/HTTPGet.java" afterPath="$PROJECT_DIR$/src/HTTP/HTTPGet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HTTP/HTTPResponse.java" afterPath="$PROJECT_DIR$/src/HTTP/HTTPResponse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HTTP/HeaderLine.java" afterPath="$PROJECT_DIR$/src/HTTP/HeaderLine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java" afterPath="$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/ClientPC.java" afterPath="$PROJECT_DIR$/src/Hosts/ClientPC.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HerADNS.java" afterPath="$PROJECT_DIR$/src/Hosts/HerADNS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HerWebServer.java" afterPath="$PROJECT_DIR$/src/Hosts/HerWebServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HisADNS.java" afterPath="$PROJECT_DIR$/src/Hosts/HisADNS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HisWebServer.java" afterPath="$PROJECT_DIR$/src/Hosts/HisWebServer.java" />
     </list>
     <ignored path="cps706_project.iws" />
     <ignored path=".idea/workspace.xml" />
