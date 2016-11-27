@@ -12,15 +12,18 @@ public class Answer {
     String value;
 
     /**
-     * Constructor for an answer response to a query using all the provided information
-     * @param name domain name of the server you are attempting to get the ip for
+     * Constructor for an answer response to a query
+     * using all the provided information
+     *
+     * @param name domain name of the server you are querying for
      * @param type type of dns record
      * @param aClass class of the query
      * @param TTL Time To Live
      * @param dataLength length of the data provided by value
      * @param value the acquired info
      */
-    public Answer(String name, String type, String aClass, int TTL, short dataLength, String value){
+    public Answer(String name, String type, String aClass,
+                  int TTL, short dataLength, String value) {
         this.name = name;
         this.type = type;
         this.aClass = aClass;
@@ -62,7 +65,9 @@ public class Answer {
     }
 
     /**
-     * packages all the information here into an array of bytes and returns it
+     * packages all the information here into an
+     * array of bytes and returns it
+     *
      * @return array of bytes containing all the information here
      */
     public byte[] getBytes(){
@@ -71,17 +76,23 @@ public class Answer {
         content = new byte[0];
         content = addBytes(content, name.getBytes());
         content = addByte(content, (byte)0);
-        content = addBytes(content, getByteFromShort(getTypeValue(type)));
-        content = addBytes(content, getByteFromShort(getClassValue(aClass)));
-        content = addBytes(content, getByteFromInt(TTL));
-        content = addBytes(content, getByteFromShort(dataLength));
+        content = addBytes(content,
+                getByteFromShort(getTypeValue(type)));
+        content = addBytes(content,
+                getByteFromShort(getClassValue(aClass)));
+        content = addBytes(content,
+                getByteFromInt(TTL));
+        content = addBytes(content,
+                getByteFromShort(dataLength));
         content = addBytes(content, value.getBytes());
 
         return content;
     }
 
     /**
-     * returns the bit representation (in the form of a short) of the String representation of Type
+     * returns the bit representation (in the form of a short)
+     * of the String representation of Type
+     *
      * @param type String representation of type
      * @return short representation of type
      */
@@ -100,6 +111,7 @@ public class Answer {
 
     /**
      * get an array of 2 bytes from a short
+     *
      * @param input input to be turned into 2 bytes
      * @return 2 bytes encompassing the short
      */
@@ -112,8 +124,9 @@ public class Answer {
     }
 
     /**
-     * appends an array of bytes (toAdd) to the end of another array of bytes (content)
-     * and returns the combo of both
+     * appends an array of bytes (toAdd) to the end of another
+     * array of bytes (content) and returns the combination of both
+     *
      * @param content to be added to
      * @param toAdd to add
      * @return combination of both
@@ -126,7 +139,8 @@ public class Answer {
     }
 
     /**
-     * gets short (16-bit) representation of class based on the string representation
+     * gets short (16-bit) representation of class
+     * based on the string representation
      * @param qClass String representation
      * @return short representation
      */
@@ -190,8 +204,12 @@ public class Answer {
      * @return string containing all the info about this class
      */
     public String toString(){
-        return "\t\tName: " + getName() + "\n\t\tType: " + getType() + "\n\t\tClass: " + getaClass()
-                + "\n\t\tTime to live: " + getTTL() + "\n\t\tData length: " + getDataLength()
-                + "\n\t\tValue: " + getValue() + "\n";
+        return "\t\tName: " + getName() +
+                "\n\t\tType: " + getType() +
+                "\n\t\tClass: " + getaClass() +
+                "\n\t\tTime to live: " + getTTL() +
+                "\n\t\tData length: " + getDataLength() +
+                "\n\t\tValue: " + getValue() +
+                "\n";
     }
 }

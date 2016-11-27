@@ -16,8 +16,13 @@ import java.nio.file.Paths;
  */
 public class HisWebServer {
 
-    public final static int PORT = 62220;
+    public final static int PORT = 62220; //port listened to
 
+    /**
+     * Main method to instantiate HerCDN.com's Web Server
+     *
+     * @param args potential arguments from users to use (unused)
+     */
     public static void main(String args[]){
         Socket mySocket;
         ServerSocket serverSocket;
@@ -35,16 +40,26 @@ public class HisWebServer {
     }
 }
 
+/**
+ * class that handles the web server's requests
+ */
 class HisHandleSocketRequest implements Runnable {
 
     public final static int MAX_FILE_SIZE = 1024;
-
     private final Socket socket;
 
+    /**
+     * constructor that defines the socket
+     *
+     * @param socket socket being handled
+     */
     public HisHandleSocketRequest(Socket socket) {
         this.socket = socket;
     }
 
+    /**
+     * run method that handles requests
+     */
     public void run() {
         InputStream inStream;
         OutputStream outStream;
@@ -78,10 +93,18 @@ class HisHandleSocketRequest implements Runnable {
         }
     }
 
+    /**
+     * Looks through the files to find the requested file,
+     * if found reads and returns the byte array of the file.
+     *
+     * @param fileName file requested
+     * @return byte array of the file
+     */
     public synchronized byte[] getFileBytes(String fileName) {
         try {
             if (fileName.substring(1).equals("index.html"))
-                return Files.readAllBytes(Paths.get("rsc/HisCinemaContents/index.html"));
+                return Files.readAllBytes(
+                        Paths.get("rsc/HisCinemaContents/index.html"));
         }
         catch(IOException e){
             System.out.println("couldn't retrieve file. Error: \n" + e);

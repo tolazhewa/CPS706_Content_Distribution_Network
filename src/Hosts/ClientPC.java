@@ -1,9 +1,10 @@
 package Hosts;
 
+import DNS.Answer;
 import DNS.DNSQuery;
 import HTTP.HTTPGet;
 import HTTP.HTTPResponse;
-import Misc.Link;
+import HTTP.Link;
 
 import java.io.*;
 import java.net.DatagramPacket;
@@ -17,67 +18,80 @@ import java.util.Scanner;
  */
 public class ClientPC {
 
-    public final static int MAX_FILE_SIZE = 1024;
+    private final static int MAX_FILE_SIZE = 1024;
     //HisCinema Web Server info
-    public final static int HWS_PORT = 62220;
-    public final static String HWS_IP = "127.0.0.1";
+    private final static int HWS_PORT = 62220;
+    private final static String HWS_IP = "127.0.0.1";
     //Local DNS Server info
-    public final static int LDNS_PORT = 62221;
-    public final static String LDNS_IP = "127.0.0.1";
+    private final static int LDNS_PORT = 62221;
+    private final static String LDNS_IP = "127.0.0.1";
     //HerCDN.com Web Server info
-    public final static int HCDN_PORT = 62222;
+    private final static int HCDN_PORT = 62222;
 
     /**
-     * main function for the Hosts.ClientPC
+     * Main function for the Hosts.ClientPC
+     *
      * @param args usable arguments
-     * @throws IOException accounts IO Errors
      */
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
         File indexHTML;
         ArrayList<Link> links;
-        String IP;
 
         indexHTML = getFileFromServer("index.html", HWS_IP, HWS_PORT);
         links = getLinksFromFile(indexHTML);
 
-        IP = dnsLookup(links.get(0).getUrl());
-
         for(Link a: links) {
-            getFileFromServer(a.getExt(), IP, HCDN_PORT);
+            getFileFromServer(a.getExt(), dnsLookup(a.getUrl()), HCDN_PORT);
         }
 
         System.out.println("All operations complete.\nGoodBye!");
     }
 
-    public static String dnsLookup(String name){
+    /**
+     * Performs a DNS lookup to the Local DNS Server
+     *
+     * @param name name of the domain requested
+     * @return IP address of domain
+     */
+    public static String dnsLookup(String name) {
         DNSQuery query;
         DatagramSocket dnsSocket;
         DatagramPacket receivePacket;
-        byte[] receivedBytes;
+        byte[] bytes;
 
-        receivedBytes = new byte[MAX_FILE_SIZE];
+        bytes = new byte[MAX_FILE_SIZE];
         query = new DNSQuery(name, "A");
 
         try {
+            System.out.println("Sending DNS Query");
             dnsSocket = new DatagramSocket();
-            dnsSocket.send(query.getPacket(LDNS_IP,LDNS_PORT));
-
-            receivePacket = new DatagramPacket(receivedBytes,receivedBytes.length);
+            dnsSocket.send(query.getPacket(LDNS_IP, LDNS_PORT));
+            receivePacket = new DatagramPacket(bytes, bytes.length);
             dnsSocket.receive(receivePacket);
 
-            query = new DNSQuery(receivedBytes);
-            return query.getAns()[0].getValue();
+            query = new DNSQuery(bytes);
 
+            for (Answer a : query.getAns()) {
+                if (a.getType().equals("A")) {
+                    return a.getValue();
+                }
+            }
+            System.out.println("DNS Query did not return any results");
+            return null;
 
-        } catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Connection to the local DNS server failed... ");
             e.printStackTrace();
             return null;
         }
-
-
     }
 
+    /**
+     * Retrieves links from a given file
+     *
+     * @param file the given file
+     * @return ArrayList of links containing files
+     */
     public static ArrayList<Link> getLinksFromFile(File file){
         Scanner fileScanner;
         ArrayList<Link> links;
@@ -90,8 +104,7 @@ public class ClientPC {
                 line = fileScanner.nextLine();
                 if(line.contains("http://")){
                     line = line.substring(line.indexOf("\"http://") + 8);
-                    links.add(new Link(line.substring(0,line.indexOf('/')),
-                            line.substring(line.indexOf('/'), line.indexOf('\"'))));
+                    links.add(new Link(line));
                 }
             }
             return links;
@@ -103,25 +116,33 @@ public class ClientPC {
         }
     }
 
-    public static File getFileFromServer(String requestFile, String IPAddress, int port){
-        Socket hisWSSocket;
+    /**
+     * Retrieves file from a server given parameters
+     *
+     * @param requestFile file requested
+     * @param IPAddress   IP Address of the server retrieved from
+     * @param port        port used to access the server retrieved from
+     * @return File requested
+     */
+    public static File getFileFromServer(String requestFile, String IPAddress, int port) {
+        Socket socket;
         InputStream inStream;
         OutputStream outStream;
         HTTPGet httpGet;
         HTTPResponse httpResponse;
         byte[] receivedBytes, bytesToSend;
-        File indexFile;
+        File file;
 
         receivedBytes = new byte[MAX_FILE_SIZE];
         httpGet = new HTTPGet("/" + requestFile);
         bytesToSend = httpGet.getBytes();
 
         try {
-            hisWSSocket = new Socket(IPAddress, port);
+            socket = new Socket(IPAddress, port);
 
             //initializing input and output for the Socket
-            inStream = hisWSSocket.getInputStream();
-            outStream = hisWSSocket.getOutputStream();
+            inStream = socket.getInputStream();
+            outStream = socket.getOutputStream();
 
             //sending the GET packet
             outStream.write(bytesToSend);
@@ -137,29 +158,40 @@ public class ClientPC {
                 return null;
             }
 
-            indexFile = createFile(requestFile, httpResponse.getData());
-            return indexFile;
+            file = createFile(requestFile, httpResponse.getData());
+            return file;
 
         } catch (IOException e) {
             System.out.println("Connection to the web server [" + IPAddress
-                                + " | " + port + "] failed... \n" + e);
+                    + " | " + port + "] failed... \n");
+            e.printStackTrace();
             return null;
         }
     }
 
+    /**
+     * checks response to a HTTP request
+     *
+     * @param response the response being checked
+     * @return if the response indicated success return true,
+     * otherwise printout problem and return false
+     */
     public static boolean checkResponse(String response){
         switch (response){
             case "404":
-                System.out.println("404: Not Found.\n\tRequested document not found on the server");
+                System.out.println("404: Not Found." +
+                        "\n\tRequested document not found on the server");
                 return false;
             case "400":
-                System.out.println("400: Bad Request.\n\tRequest message not understood by server");
+                System.out.println("400: Bad Request." +
+                        "\n\tRequest message not understood by server");
                 return false;
             case "505":
                 System.out.println("505: HTTP Version Not Supported");
                 return false;
             case "200":
-                System.out.println("200: OK.\n\tRequest Succeeded, requested object in data");
+                System.out.println("200: OK." +
+                        "\n\tRequest Succeeded, requested object in data");
                 return true;
             default:
                 System.out.println("Unknown response...");
@@ -167,6 +199,13 @@ public class ClientPC {
         }
     }
 
+    /**
+     * Creates file based on given content (in bytes)
+     *
+     * @param fileName name of the file being created
+     * @param fileContent content in bytes
+     * @return file made up of the given bytes
+     */
     public static File createFile(String fileName, byte[] fileContent){
         File file;
         FileOutputStream fileOutStream;

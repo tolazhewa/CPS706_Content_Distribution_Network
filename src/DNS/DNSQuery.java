@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class DNSQuery {
     private short transactionID; //randomly generated ID that identifies the query
-    private short flags; //flags that determine what kind of query it is
+    private int flags; //flags that determine what kind of query it is
     private short questions; //number of questions
     private short answerRRs; //number of answers
     private short authorityRRs; //number of authority RRs
@@ -22,7 +22,8 @@ public class DNSQuery {
 
     /**
      * Creating a basic request query
-     * @param name the name of the domain that IP address is inquired for
+     *
+     * @param name the name of the domain that IP address is queried for
      * @param type the type of inquiry
      */
     public DNSQuery(String name, String type){
@@ -43,6 +44,7 @@ public class DNSQuery {
 
     /**
      * Recreating DNS Query using the bytes
+     *
      * All the information will be put into approperiate variables
      * @param content byte array that contains all the information
      */
@@ -56,15 +58,17 @@ public class DNSQuery {
         name = "";
         type = "";
         value = "";
-        i = 12;
+        i = 14;
 
         //getting all the information from the bytes
         transactionID = getShortFromTwoBytes(content[0], content[1]);
-        flags = getShortFromTwoBytes(content[2], content[3]);
-        questions = getShortFromTwoBytes(content[4], content[5]);
-        answerRRs = getShortFromTwoBytes(content[6], content[7]);
-        authorityRRs = getShortFromTwoBytes(content[8], content[9]);
-        additionalRRs = getShortFromTwoBytes(content[10], content[11]);
+        flags = getIntFromFourBytes(content[2], content[3],
+                content[4], content[5]);
+        questions = getShortFromTwoBytes(content[6], content[7]);
+        answerRRs = getShortFromTwoBytes(content[8], content[9]);
+        authorityRRs = getShortFromTwoBytes(content[10], content[11]);
+        additionalRRs = getShortFromTwoBytes(content[12], content[13]);
+
         ques = new Question[questions];
         ans = new Answer[answerRRs];
         auth = new Authority[authorityRRs];
@@ -74,63 +78,102 @@ public class DNSQuery {
             for (; content[i] != 0; i++) {
                 name += (char) content[i];
             } i++;
-            type = getTypeString(getShortFromTwoBytes(content[i], content[i + 1])); i+=2;
-            ques[k] = new Question(name, type, "IN");
+            type = getTypeString(getShortFromTwoBytes(content[i],
+                    content[i + 1]));
+            i += 2;
+            xClass = getClassString(getShortFromTwoBytes(content[i],
+                    content[i + 1]));
+            i++;
+            ques[k] = new Question(name, type, xClass);
             name = "";
             type = "";
         }
-
         for(short k = 0; k < answerRRs; k++) {
             for(; content[i] != 0; i++){
                 name += (char) content[i];
             } i++;
-            type = getTypeString(getShortFromTwoBytes(content[i], content[i + 1])); i+=2;
-            xClass = getClassString(getShortFromTwoBytes(content[i], content[i + 1])); i+=2;
-            ttl = getIntFromFourBytes(content[i], content[i+1], content[i+2], content[i+3]); i+=4;
-            dataLength = getShortFromTwoBytes(content[i],content[i+1]); i+=2;
+            type = getTypeString(getShortFromTwoBytes(content[i],
+                    content[i + 1]));
+            i += 2;
+            xClass = getClassString(getShortFromTwoBytes(content[i],
+                    content[i + 1]));
+            i += 2;
+            ttl = getIntFromFourBytes(content[i], content[i + 1],
+                    content[i + 2], content[i + 3]);
+            i += 4;
+            dataLength = getShortFromTwoBytes(content[i],
+                    content[i + 1]);
+            i += 2;
+
             for(int j = 0; j < dataLength; j++){
                 value += (char)content[i+j];
             } i+=dataLength;
-
             ans[k] = new Answer(name,type,xClass,ttl,dataLength,value);
 
             name = "";
             type = "";
             value = "";
         }
-
         for(short k = 0; k < authorityRRs; k++) {
             for(; content[i] != 0; i++){
                 name += (char) content[i];
-            } i++;
-            type = getTypeString(getShortFromTwoBytes(content[i], content[i + 1])); i+=2;
-            xClass = getClassString(getShortFromTwoBytes(content[i], content[i + 1])); i+=2;
-            ttl = getIntFromFourBytes(content[i], content[i+1], content[i+2], content[i+3]); i+=4;
-            dataLength = getShortFromTwoBytes(content[i],content[i+1]); i+=2;
+            }
+            i++;
+            name += '\0';
+            type = getTypeString(getShortFromTwoBytes(content[i],
+                    content[i + 1]));
+            i += 2;
+            xClass = getClassString(getShortFromTwoBytes(content[i],
+                    content[i + 1]));
+            i += 2;
+            ttl = getIntFromFourBytes(content[i], content[i + 1],
+                    content[i + 2], content[i + 3]);
+            i += 4;
+            dataLength = getShortFromTwoBytes(content[i],
+                    content[i + 1]);
+            i += 2;
             for(int j = 0; j < dataLength; j++){
                 value += (char)content[i+j];
             } i+=dataLength;
-
             auth[k] = new Authority(name,type,xClass,ttl,dataLength,value);
 
             name = "";
             type = "";
             value = "";
         }
+
+    }
+
+    /**
+     * gets 4 byte array representation of an integer
+     *
+     * @param input integer
+     * @return 4 byte array
+     */
+    public static byte[] getByteFromInt(int input) {
+        byte[] conv = new byte[4];
+        conv[3] = (byte) (input & 0xff);
+        input >>= 8;
+        conv[2] = (byte) (input & 0xff);
+        input >>= 8;
+        conv[1] = (byte) (input & 0xff);
+        input >>= 8;
+        conv[0] = (byte) input;
+        return conv;
     }
 
     /**
      * return byte representation of the DNS query
+     *
      * @return byte array
      */
     public byte[] getBytes(){
-        DatagramPacket packet;
         byte content[];
 
         content = new byte[0];
 
         content = addBytes(content,getByteFromShort(transactionID));
-        content = addBytes(content,getByteFromShort(flags));
+        content = addBytes(content, getByteFromInt(flags));
         content = addBytes(content,getByteFromShort(questions));
         content = addBytes(content,getByteFromShort(answerRRs));
         content = addBytes(content,getByteFromShort(authorityRRs));
@@ -149,27 +192,31 @@ public class DNSQuery {
 
     /**
      * Creates the datagram packet to send
+     *
      * @param IPAddress Destination IP address of the receiver
      * @param port Destination port of the receiver
      * @return the datagram to send
      */
-    public DatagramPacket getPacket(String IPAddress, int port){
-        DatagramPacket packet;
+    public DatagramPacket getPacket(InetAddress IPAddress, int port) {
         byte content[];
 
         content = getBytes();
+        return new DatagramPacket(content, content.length, IPAddress, port);
+    }
+
+    public DatagramPacket getPacket(String IPAddress, int port) {
         try {
-            packet = new DatagramPacket(content, content.length, InetAddress.getByName(IPAddress), port);
+            return getPacket(InetAddress.getByName(IPAddress), port);
         } catch (UnknownHostException e) {
-            System.out.println("Invalid IP Address");
+            System.out.println("IP Address not found");
             e.printStackTrace();
             return null;
         }
-        return packet;
     }
 
     /**
      * Gives string representation of Class
+     *
      * @param qClass short rep.
      * @return String rep.
      */
@@ -182,6 +229,7 @@ public class DNSQuery {
 
     /**
      * Creating an answer in the packet
+     *
      * @param name name
      * @param type type
      * @param aClass class
@@ -189,11 +237,11 @@ public class DNSQuery {
      * @param dataLength Length of the answer
      * @param value answer
      */
-    public void addAnswer(String name, String type, String aClass, int TTL, short dataLength,String value){
+    public void addAnswer(String name, String type, String aClass,
+                          int TTL, short dataLength, String value) {
         Answer answer[];
 
-        answerRRs++;
-        answer = new Answer[answerRRs];
+        answer = new Answer[++answerRRs];
         System.arraycopy(ans, 0, answer, 0, answerRRs - 1);
         answer[answerRRs - 1] = new Answer(name,type,aClass,TTL,dataLength,value);
         ans = answer;
@@ -201,10 +249,40 @@ public class DNSQuery {
         flags |= 0x8080; // turns on the response bit and recursion available bit
     }
 
+    /**
+     * Creating an answer in the packet with TTL = 10 and Class = "IN"
+     *
+     * @param name  name
+     * @param type  type
+     * @param value answer
+     */
+    public void addAnswer(String name, String type, String value) {
+        this.addAnswer(name, type, "IN", 10, (short) value.length(), value);
+    }
 
+    /**
+     * Creating an answer in the packet with TTL = 10 and Class = "IN"
+     *
+     * @param r record
+     */
+    public void addAnswer(Record r) {
+        this.addAnswer(r.getName(),
+                r.getType(), r.getValue());
+    }
+
+    /**
+     * Creating an answer in the packet with TTL = 10 and Class = "IN"
+     *
+     * @param ans an instance of answer
+     */
+    public void addAnswer(Answer ans) {
+        this.addAnswer(ans.getName(), ans.getType(), ans.getaClass(), 10,
+                (short) ans.getValue().length(), ans.getValue());
+    }
 
     /**
      * adds an authority nameserver's info to the array
+     *
      * @param name name of the server
      * @param type type of inquiry
      * @param aClass class of the inquiry
@@ -216,19 +294,50 @@ public class DNSQuery {
                              short dataLength, String value){
         Authority authority[];
 
-        authorityRRs++;
-        authority = new Authority[authorityRRs];
+        authority = new Authority[++authorityRRs];
 
         System.arraycopy(auth, 0, authority, 0, authorityRRs - 1);
-        authority[answerRRs - 1] = new Authority(name,type,aClass,TTL,dataLength,value);
+        authority[authorityRRs - 1] = new Authority(name, type, aClass, TTL, dataLength, value);
         auth = authority;
 
         flags |= 0x8080; // turns on the response bit and recursion available bit
     }
 
     /**
-     * appends an array of bytes (toAdd) to the end of another array of bytes (content)
-     * and returns the combo of both
+     * adds an authority nameserver's info to the array
+     *
+     * @param name name of the server
+     * @param type type of inquiry
+     * @param value the value returned by authoritative nameserver
+     */
+    public void addAuthority(String name, String type, String value) {
+        this.addAuthority(name, type, "IN", 10, (short) value.length(), value);
+    }
+
+    /**
+     * adds an authority nameserver's info to the array
+     *
+     * @param auth authority instance
+     */
+    public void addAuthority(Authority auth) {
+        this.addAuthority(auth.getName(), auth.getType(), auth.getaClass(),
+                10, (short) auth.getValue().length(), auth.getValue());
+    }
+
+    /**
+     * adds an authority nameserver's info to the array
+     *
+     * @param r record
+     */
+    public void addAuthority(Record r) {
+        this.addAuthority(r.getName(),
+                r.getType(), r.getValue());
+    }
+
+    /**
+     * appends an array of bytes (toAdd) to the end of another
+     * array of bytes (content) and returns the combination of both
+     *
      * @param content to be added to
      * @param toAdd to add
      * @return combination of both
@@ -242,6 +351,7 @@ public class DNSQuery {
 
     /**
      * creates a short from two bytes
+     *
      * @param one first byte
      * @param two second byte
      * @return short
@@ -256,6 +366,7 @@ public class DNSQuery {
 
     /**
      * creates an integer from four bytes
+     *
      * @param one first byte
      * @param two second byte
      * @param three third byte
@@ -264,46 +375,62 @@ public class DNSQuery {
      */
     public int getIntFromFourBytes(byte one, byte two, byte three, byte four) {
         int toRet;
-        toRet = one; toRet <<= 8;
-        toRet |= two; toRet <<= 8;
-        toRet |= three; toRet <<= 8;
+        toRet = one;
+        toRet <<= 8;
+        toRet |= two;
+        toRet <<= 8;
+        toRet |= three;
+        toRet <<= 8;
         toRet |= four;
         return toRet;
     }
 
     /**
-     * get an array of 2 bytes from a short
+     * gives an array of 2 bytes from a short
+     *
      * @param input input to be turned into 2 bytes
      * @return 2 bytes encompassing the short
      */
-    public byte[] getByteFromShort(short input){
+    public byte[] getByteFromShort(short input) {
         byte[] conv = new byte[2];
-        conv[1] = (byte)(input & 0xff);
+        conv[1] = (byte) (input & 0xff);
         input >>= 8;
         conv[0] = (byte)(input & 0xff);
         return conv;
     }
 
     /**
-     * Given the value of the Type, gives you the string representation of the type
+     * Given the value of the Type, returns the
+     * string representation of the type
+     *
      * @param value the short representation
      * @return string representation
      */
     private String getTypeString(short value) {
-        switch(value){
-            case 1: return "A";
-            case 2: return "NS";
-            case 5: return "CNAME";
-            case 6: return "SOA";
-            case 9: return "R";
-            case 15: return "MX";
-            case 26: return "AAAA";
-            default: System.out.println("Unknown Value"); return "";
+        switch (value) {
+            case 1:
+                return "A";
+            case 2:
+                return "NS";
+            case 5:
+                return "CNAME";
+            case 6:
+                return "SOA";
+            case 9:
+                return "R";
+            case 15:
+                return "MX";
+            case 26:
+                return "AAAA";
+            default:
+                System.out.println("Unknown Value");
+                return "";
         }
     }
 
     /**
      * getter for Transaction ID
+     *
      * @return transaction ID
      */
     public short getTransactionID() {
@@ -312,14 +439,16 @@ public class DNSQuery {
 
     /**
      * getter for flags
+     *
      * @return flags
      */
-    public short getFlags() {
+    public int getFlags() {
         return flags;
     }
 
     /**
      * getter for the number of questions
+     *
      * @return number of questions
      */
     public short getQuestions() {
@@ -328,6 +457,7 @@ public class DNSQuery {
 
     /**
      * getter for number of authority name server requests
+     *
      * @return number of authority name server requests
      */
     public short getAuthorityRRs() {
@@ -336,6 +466,7 @@ public class DNSQuery {
 
     /**
      * getter for number of answers
+     *
      * @return number of answers
      */
     public short getAnswerRRs() {
@@ -344,6 +475,7 @@ public class DNSQuery {
 
     /**
      * getter for number of Additional RRs
+     *
      * @return number of Additional RRs
      */
     public short getAdditionalRRs() {
@@ -352,6 +484,7 @@ public class DNSQuery {
 
     /**
      * getter for questions
+     *
      * @return question
      */
     public Question[] getQues() {
@@ -360,6 +493,7 @@ public class DNSQuery {
 
     /**
      * getter for answers
+     *
      * @return answers
      */
     public Answer[] getAns() {
@@ -368,6 +502,7 @@ public class DNSQuery {
 
     /**
      * getter for authorities
+     *
      * @return authorities
      */
     public Authority[] getAuth() {
@@ -377,30 +512,32 @@ public class DNSQuery {
 
     /**
      * prints out all properties of the class
+     *
      * @return string containing all the info about this class
      */
-    public String toString(){
-        String toRet = "Transaction ID: " + getTransactionID()
-                + "\nFlags: " + String.format("%16s", Integer.toBinaryString(getFlags())).replace(' ', '0')
-                + "\nQuestios: " + getQuestions()
-                + "\nDNS.Answer RRs: " + getAnswerRRs()
-                + "\nDNS.Authority RRs: " + getAuthorityRRs()
+    public String toString() {
+        String toRet = "\nTransaction ID: " + getTransactionID()
+                + "\nFlags: 0x" + String.format("%4s",
+                Integer.toHexString(getFlags())).replace(' ', '0')
+                + "\nQuestions: " + getQuestions()
+                + "\nAnswer RRs: " + getAnswerRRs()
+                + "\nAuthority RRs: " + getAuthorityRRs()
                 + "\nAdditional RRs: " + getAdditionalRRs()
                 + "\nQueries:";
-        for(int i = 0; i < getQuestions(); i++){
+        for (int i = 0; i < getQuestions(); i++) {
             toRet += "\n\tQuery #" + (i+1) + ": ";
             toRet += "\n" + getQues()[i].toString();
         }
         if(getAnswerRRs() > 0)
             toRet += "\nAnswers:";
         for (short i = 0; i < getAnswerRRs(); i++) {
-            toRet += "\n\tDNS.Answer #" + (i + 1) + ": ";
+            toRet += "\n\tAnswer #" + (i + 1) + ": ";
             toRet += "\n" + getAns()[i].toString();
         }
         if(getAuthorityRRs() > 0)
             toRet += "\nAuthoritative Nameservers:";
         for (short i = 0; i < getAuthorityRRs(); i++) {
-            toRet += "\n\tDNS.Authority #" + (i + 1) + ": ";
+            toRet += "\n\tAuthority #" + (i + 1) + ": ";
             toRet += "\n" + getAuth()[i].toString();
         }
         return toRet;

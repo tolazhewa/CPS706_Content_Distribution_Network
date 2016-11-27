@@ -14,6 +14,7 @@ public class HTTPGet {
 
     /**
      * Constructor to initialize an HTTP GET request
+     *
      * @param method method of the packet
      * @param url url of the file requested
      * @param version version of HTTP used
@@ -29,6 +30,7 @@ public class HTTPGet {
 
     /**
      * Constructor to initialize an HTTP GET request (there is no data)
+     *
      * @param method method of the packet
      * @param url url of the file requested
      * @param version version of HTTP used
@@ -44,6 +46,7 @@ public class HTTPGet {
     /**
      * Constructor to initialize an HTTP GET request
      * the request has been defaulted "GET" and "HTTP/1.1"
+     *
      * @param url url of the file requested
      */
     public HTTPGet(String url){
@@ -56,6 +59,7 @@ public class HTTPGet {
 
     /**
      * Recreates a HTTP GET request based on bytes
+     *
      * @param content bytes of content
      */
     public HTTPGet(byte[] content){
@@ -91,7 +95,22 @@ public class HTTPGet {
     }
 
     /**
+     * adds a byte to an array of bytes
+     *
+     * @param content array of bytes
+     * @param toAdd byte to add
+     * @return array of bytes including toAdd
+     */
+    public static byte[] addByte(byte[] content, byte toAdd) {
+        byte[] toRet = new byte[content.length + 1];
+        System.arraycopy(content, 0, toRet, 0, content.length);
+        toRet[content.length] = toAdd;
+        return toRet;
+    }
+
+    /**
      * retrieves byte representation of the HTTP GET request
+     *
      * @return byte representation
      */
     public byte[] getBytes(){
@@ -121,21 +140,9 @@ public class HTTPGet {
     }
 
     /**
-     * adds a byte to an array of bytes
-     * @param content array of bytes
-     * @param toAdd byte to add
-     * @return array of bytes including toAdd
-     */
-    public static byte[] addByte(byte[] content, byte toAdd) {
-        byte[] toRet = new byte[content.length + 1];
-        System.arraycopy(content,0,toRet,0,content.length);
-        toRet[content.length] = toAdd;
-        return toRet;
-    }
-
-    /**
-     * appends an array of bytes (toAdd) to the end of another array of bytes (content)
-     * and returns the combo of both
+     * appends an array of bytes (toAdd) to the end of another
+     * array of bytes (content) and returns the combination of both
+     *
      * @param content to be added to
      * @param toAdd to add
      * @return combination of both
@@ -149,12 +156,15 @@ public class HTTPGet {
 
     /**
      * returns a string showing all the information
+     *
      * @return information
      */
     public String toString(){
         String a;
 
-        a = this.getMethod() + " " + this.getUrl() + " " + this.getVersion() + "\\r\\n";
+        a = this.getMethod() + " " +
+                this.getUrl() + " " +
+                this.getVersion() + "\\r\\n";
         for(HeaderLine h: getHeaderLines()){
             a += h.toString();
         }
@@ -165,6 +175,7 @@ public class HTTPGet {
 
     /**
      * returns method used to get
+     *
      * @return method
      */
     public String getMethod() {
@@ -173,6 +184,7 @@ public class HTTPGet {
 
     /**
      * returns the URL of the file requested
+     *
      * @return URL
      */
     public String getUrl() {
@@ -181,6 +193,7 @@ public class HTTPGet {
 
     /**
      * returns the version of HTTP used
+     *
      * @return HTTP version
      */
     public String getVersion() {
@@ -189,6 +202,7 @@ public class HTTPGet {
 
     /**
      * returns the header lines
+     *
      * @return Header Lines
      */
     public ArrayList<HeaderLine> getHeaderLines() {
@@ -197,6 +211,7 @@ public class HTTPGet {
 
     /**
      * returns any data attached to the request
+     *
      * @return data
      */
     public byte[] getData() {

@@ -11,6 +11,7 @@ public class Record {
 
     /**
      * constructor that sets all the information for the record
+     *
      * @param name name associated with the record
      * @param value value corresponding to the name
      * @param type type of the record
@@ -23,6 +24,7 @@ public class Record {
 
     /**
      * return name
+     *
      * @return name
      */
     public String getName(){
@@ -31,6 +33,7 @@ public class Record {
 
     /**
      * returns value
+     *
      * @return value
      */
     public String getValue(){
@@ -39,6 +42,7 @@ public class Record {
 
     /**
      * returns type
+     *
      * @return type
      */
     public String getType(){
@@ -46,8 +50,28 @@ public class Record {
     }
 
     /**
+     * return true if the records are equal, else false
+     *
+     * @param b other object
+     * @return true if equal, false if not
+     */
+    public boolean equals(Object b) {
+        if (getClass() != b.getClass())
+            return false;
+        Record r = (Record) b;
+        return r.getName().equals(this.getName()) &&
+                r.getValue().equals(this.getValue()) &&
+                r.getType().equals(this.getType());
+    }
+
+    /**
      * prints out the recording in approperiate formatting
+     *
      * @return record
      */
-    public String toString(){ return "(" + getName() + ", " + getValue() + ", " + getType() + ")"; }
+    public String toString() {
+        return "(" + getName() +
+                ", " + getValue() +
+                ", " + getType() + ")";
+    }
 }

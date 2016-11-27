@@ -19,7 +19,8 @@ public class HTTPResponse {
      * @param statusCode     status code (200, etc)
      * @param responsePhrase response phrase with the status code
      */
-    public HTTPResponse(String requestVersion, String statusCode, String responsePhrase) {
+    public HTTPResponse(String requestVersion, String statusCode,
+                        String responsePhrase) {
         this.requestVersion = requestVersion;
         this.statusCode = statusCode;
         this.responsePhrase = responsePhrase;
@@ -34,7 +35,8 @@ public class HTTPResponse {
      * @param statusCode     status code (200, etc)
      * @param responsePhrase response phrase with the status code
      */
-    public HTTPResponse(String requestVersion, String statusCode, String responsePhrase, byte[] data) {
+    public HTTPResponse(String requestVersion, String statusCode,
+                        String responsePhrase, byte[] data) {
         this.requestVersion = requestVersion;
         this.statusCode = statusCode;
         this.responsePhrase = responsePhrase;
@@ -52,7 +54,11 @@ public class HTTPResponse {
         String n, v;
 
         headerLines = new ArrayList<>();
-        requestVersion = ""; statusCode = ""; responsePhrase = ""; n = ""; v = "";
+        requestVersion = "";
+        statusCode = "";
+        responsePhrase = "";
+        n = "";
+        v = "";
         data = new byte[0];
 
         for (i=0; (char) content[i] != ' '; i++) {
@@ -126,8 +132,8 @@ public class HTTPResponse {
     }
 
     /**
-     * appends an array of bytes (toAdd) to the end of another array of bytes (content)
-     * and returns the combo of both
+     * appends an array of bytes (toAdd) to the end of another
+     * array of bytes (content)and returns the combination of both
      *
      * @param content to be added to
      * @param toAdd   to add
@@ -148,7 +154,9 @@ public class HTTPResponse {
     public String toString() {
         String a;
 
-        a = this.getRequestVersion() + " " + this.getStatusCode() + " " + this.getResponsePhrase() + "\\r\\n";
+        a = this.getRequestVersion() + " " +
+                this.getStatusCode() + " " +
+                this.getResponsePhrase() + "\\r\\n";
         for (HeaderLine h : this.getHeaderLines()) {
             a += h.getName() + ": " + h.getValue() + "\\r\\n";
         }

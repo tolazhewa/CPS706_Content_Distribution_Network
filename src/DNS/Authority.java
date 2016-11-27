@@ -12,7 +12,9 @@ public class Authority {
     String value;
 
     /**
-     * Constructor to make a authorityRR based on all the information provided
+     * Constructor to make a authorityRR based
+     * on all the information provided
+     *
      * @param name name
      * @param type type
      * @param aClass class
@@ -20,8 +22,8 @@ public class Authority {
      * @param dataLength length of the upcoming data in value
      * @param value the nameserver returned
      */
-    public Authority(String name, String type, String aClass, int TTL, short dataLength,
-                     String value){
+    public Authority(String name, String type, String aClass,
+                     int TTL, short dataLength, String value) {
         this.name = name;
         this.type = type;
         this.aClass = aClass;
@@ -33,6 +35,7 @@ public class Authority {
 
     /**
      * adds a byte to an array of bytes
+     *
      * @param content array of bytes
      * @param toAdd byte to add
      * @return array of bytes including toAdd
@@ -63,7 +66,9 @@ public class Authority {
     }
 
     /**
-     * packages all the information here into an array of bytes and returns it
+     * packages all the information here into an
+     * array of bytes and returns it
+     *
      * @return array of bytes containing all the information here
      */
     public byte[] getBytes(){
@@ -82,7 +87,9 @@ public class Authority {
     }
 
     /**
-     * returns the bit representation (in the form of a short) of the String representation of Type
+     * returns the bit representation (in the form of a short)
+     * of the String representation of Type
+     *
      * @param type String representation of type
      * @return short representation of type
      */
@@ -101,6 +108,7 @@ public class Authority {
 
     /**
      * get an array of 2 bytes from a short
+     *
      * @param input input to be turned into 2 bytes
      * @return 2 bytes encompassing the short
      */
@@ -113,8 +121,9 @@ public class Authority {
     }
 
     /**
-     * appends an array of bytes (toAdd) to the end of another array of bytes (content)
-     * and returns the combo of both
+     * appends an array of bytes (toAdd) to the end of another
+     * array of bytes (content) and returns the combination of both
+     *
      * @param content to be added to
      * @param toAdd to add
      * @return combination of both
@@ -128,7 +137,9 @@ public class Authority {
 
 
     /**
-     * gets short (16-bit) representation of class based on the string representation
+     * gets short (16-bit) representation of class
+     * based on the string representation
+     *
      * @param qClass String representation
      * @return short representation
      */
@@ -141,6 +152,7 @@ public class Authority {
 
     /**
      * getter for name
+     *
      * @return name
      */
     public String getName() {
@@ -149,6 +161,7 @@ public class Authority {
 
     /**
      * getter for the type of query
+     *
      * @return type
      */
     public String getType() {
@@ -157,6 +170,7 @@ public class Authority {
 
     /**
      * getter for the class of the query
+     *
      * @return class of the query
      */
     public String getaClass() {
@@ -165,6 +179,7 @@ public class Authority {
 
     /**
      * return the time to live
+     *
      * @return time to live
      */
     public int getTTL() {
@@ -173,6 +188,7 @@ public class Authority {
 
     /**
      * returns data length
+     *
      * @return data length
      */
     public short getDataLength() {
@@ -181,6 +197,7 @@ public class Authority {
 
     /**
      * returns value
+     *
      * @return value
      */
     public String getValue() {
@@ -189,11 +206,16 @@ public class Authority {
 
     /**
      * prints out all properties of the class
+     *
      * @return string containing all the info about this class
      */
     public String toString(){
-        return "\t\tName: " + getName() + "\n\t\tType: " + getType() + "\n\t\tClass: " + getaClass()
-                + "\n\t\tTime to live: " + getTTL() + "\n\t\tData length: " + getDataLength()
-                + "\n\t\tValue: " + getValue() + "\n";
+        return "\t\tName: " + getName() +
+                "\n\t\tType: " + getType() +
+                "\n\t\tClass: " + getaClass() +
+                "\n\t\tTime to live: " + getTTL() +
+                "\n\t\tData length: " + getDataLength() +
+                "\n\t\tValue: " + getValue() +
+                "\n";
     }
 }

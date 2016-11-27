@@ -10,6 +10,7 @@ public class Question {
 
     /**
      * Contructor with all the information
+     *
      * @param name domain name server is looking up IP addresses for
      * @param type type dns question
      * @param qClass class of dns question
@@ -22,6 +23,7 @@ public class Question {
 
     /**
      * adds a byte to an array of bytes
+     *
      * @param content array of bytes
      * @param toAdd byte to add
      * @return array of bytes including toAdd
@@ -34,7 +36,9 @@ public class Question {
     }
 
     /**
-     * returns the bit representation (in the form of a short) of the String representation of Type
+     * returns the bit representation (in the form of a short)
+     * of the String representation of Type
+     *
      * @param type String representation of type
      * @return short representation of type
      */
@@ -52,7 +56,9 @@ public class Question {
     }
 
     /**
-     * gets short (16-bit) representation of class based on the string representation
+     * gets short (16-bit) representation of class
+     * based on the string representation
+     *
      * @param qClass String representation
      * @return short representation
      */
@@ -64,7 +70,9 @@ public class Question {
     }
 
     /**
-     * packages all the information here into an array of bytes and returns it
+     * packages all the information here into
+     * an array of bytes and returns it
+     *
      * @return array of bytes containing all the information here
      */
     public byte[] getBytes() {
@@ -133,7 +141,10 @@ public class Question {
      * @return string containing all the info about this class
      */
     public String toString(){
-        return "\t\tName: " + getName() + "\n\t\tType: " + getType() + "\n\t\tClass: " + getqClass() + "\n";
+        return "\t\tName: " + getName() +
+                "\n\t\tType: " + getType() +
+                "\n\t\tClass: " + getqClass() +
+                "\n";
     }
 
 }
