@@ -14,17 +14,15 @@ import java.util.ArrayList;
 public class ClientLocalDNS {
 
     private final static int MAX_FILE_SIZE = 1024;
-    //client
-    private final static int CLIENT_PORT = 62221;
-    //hiscinema.com dns port&IP
-    private final static int HisDNS_PORT = 62224;
+    private final static int CLIENT_PORT = 40080;
+    private final static int ADNS_PORT = 40081;
+    private final static int HerDNS_PORT = 40082;
     private final static String HisDNS_IP = "127.0.0.1";
-    //hercdn.com dns port&IP
-    private final static int HerDNS_PORT = 62225;
     private final static String HerDNS_IP = "127.0.0.1";
 
     private static ArrayList<Record> records; //list of records
     private static DNSQuery query; //current query handled
+
     /**
      * Main method to instantiate the Local DNS server
      *
@@ -45,6 +43,7 @@ public class ClientLocalDNS {
                 datagramPacket = new DatagramPacket(data, data.length);
                 datagramSocket.receive(datagramPacket);
                 query = new DNSQuery(data);
+                System.out.println("DNS Query RECEIVED:\n" + query);
                 datagramPacket = getDNSResponse(
                         datagramPacket.getAddress(),
                         datagramPacket.getPort());
@@ -68,6 +67,7 @@ public class ClientLocalDNS {
         for (Question q : query.getQues()) {
             recordsLookup(q.getName());
         }
+        System.out.println("DNS Query RETURNED: \n" + query);
         return query.getPacket(ip, port);
     }
 
@@ -80,46 +80,24 @@ public class ClientLocalDNS {
         for (Record r : findInRecords(name)) {
             switch (r.getType()) {
                 case "A":
-                    handleAQuery(r);
-                    break;
-                case "R":
                     query.addAnswer(r);
-                    handleRQuery(r.getValue());
-                    break;
+                    return;
                 case "CNAME":
-                    handleCNAMEQuery(r);
-                    break;
+                    query.addAnswer(r);
+                    recordsLookup(r.getValue());
+                    return;
                 case "NS":
                     handleNSQuery(r);
-                    break;
+                    return;
                 default:
                     System.out.println("Invalid type");
-                    break;
+                    return;
             }
         }
     }
 
     /**
-     * Method to handle A query types
-     *
-     * @param r "A" record
-     */
-    public static void handleAQuery(Record r) {
-        query.addAnswer(r.getName(), r.getType(), r.getValue());
-    }
-
-    /**
-     * Method to handle CNAME query types
-     *
-     * @param r "CNAME" record
-     */
-    public static void handleCNAMEQuery(Record r) {
-        query.addAnswer(r.getName(), r.getType(), r.getValue());
-        recordsLookup(r.getValue());
-    }
-
-    /**
-     * Method to handle CNAME query types
+     * Method to handle NS query types
      *
      * @param r "NS" record
      */
@@ -135,37 +113,6 @@ public class ClientLocalDNS {
         if (findInRecords(r.getValue()).isEmpty()) {
             System.out.println("A type for NS lookup: "
                     + r.getName() + "was not found!");
-        }
-    }
-
-    /**
-     * Method to handle R query types
-     *
-     * @param name "R" Record's redirection value
-     */
-    public static void handleRQuery(String name) {
-        for (Record rec : findInRecords(name)) {
-            if (!existsInQuery(rec)) {
-                switch (rec.getType()) {
-                    case "NS":
-                        query.addAuthority(rec);
-                        for (Record a : findInRecords(rec.getValue())) {
-                            if (a.getType().equals("A"))
-                                dnsLookup(a.getName(), a.getValue(), name);
-                        }
-                        break;
-                    case "CNAME":
-                        handleCNAMEQuery(rec);
-                        break;
-                    case "A":
-                        query.addAnswer(rec.getName(), rec.getType(), rec.getValue());
-                        recordsLookup(rec.getValue());
-                        break;
-                    case "R":
-                        handleRQuery(rec.getValue());
-                        break;
-                }
-            }
         }
     }
 
@@ -186,10 +133,10 @@ public class ClientLocalDNS {
         Record r;
 
         //REMOVE THIS PART ONCE SET UP ON LAB MACHINES
-        if (dnsName.equals("NSherCDN.com"))
+        if (dnsName.trim().equals("NSherCDN.com"))
             port = HerDNS_PORT;
         else
-            port = HisDNS_PORT;
+            port = ADNS_PORT;
 
         query2 = new DNSQuery(target, "A");
 
@@ -198,32 +145,45 @@ public class ClientLocalDNS {
         try {
             dnsSocket = new DatagramSocket();
             dnsSocket.send(query2.getPacket(ip, port));
+            System.out.println("Sending to ADNS: " + ip +
+                    " | " + port + "\n" + query2);
 
             receivePacket = new DatagramPacket(bytes, bytes.length);
             dnsSocket.receive(receivePacket);
             query2 = new DNSQuery(bytes);
 
-            if (query2.getAns().length != 0 &&
-                    query2.getAns()[0].getType().equals("R")) {
-                r = new Record(query2.getAns()[0].getName(),
-                        query2.getAns()[0].getValue(),
-                        query2.getAns()[0].getType());
-                if (!existsInRecords(r)) {
-                    records.add(r);
-                    orderRecords();
+            System.out.println("Receiving from ADNS: " + ip +
+                    " | " + port + "\n" + query2);
+
+            if(query2.getAns().length == 0 &&
+                    query2.getAuth().length == 0)
+                return;
+
+            if(query2.getAuth().length != 0) {
+                for(Authority a: query2.getAuth()){
+                    if(a.getType().equals("NS")){
+                        query.addAuthority(a);
+                        for(Answer ans: query2.getAns()){
+                            if(ans.getName().trim().equals
+                                    (a.getValue().trim())){
+                                dnsLookup(ans.getName(),
+                                        ans.getValue(),a.getName());
+                            }
+                        }
+                    }
                 }
-                query.addAnswer(query2.getAns()[0].getName(),
-                        query2.getAns()[0].getType(),
-                        query2.getAns()[0].getValue());
-                handleRQuery(query2.getAns()[0].getValue());
-            } else {
+            }
+            else {
                 for (Answer a : query2.getAns()) {
-                    r = new Record(a.getName(), a.getValue(), a.getType());
+                    r = new Record(a.getName(),
+                            a.getValue(), a.getType());
                     if (!existsInRecords(r)) {
                         records.add(r);
                         orderRecords();
                     }
-                    query.addAnswer(a.getName(), a.getType(), a.getValue());
+                    if (!existsInQuery(r))
+                        query.addAnswer(a.getName(),
+                                a.getType(), a.getValue());
                 }
             }
 
@@ -246,10 +206,6 @@ public class ClientLocalDNS {
         }
         for (Record r : records) {
             if (r.getType().equals("AAAA"))
-                rec.add(r);
-        }
-        for (Record r : records) {
-            if (r.getType().equals("R"))
                 rec.add(r);
         }
         for (Record r : records) {
@@ -287,7 +243,7 @@ public class ClientLocalDNS {
     public static ArrayList<Record> findInRecords(String name) {
         ArrayList<Record> rs = new ArrayList<>();
         for (Record r : records) {
-            if (r.getName().trim().equals(name))
+            if (r.getName().trim().equals(name.trim()))
                 rs.add(r);
         }
         if (rs.isEmpty())
@@ -338,10 +294,10 @@ public class ClientLocalDNS {
     public static void instantiateRecords() {
         records = new ArrayList<>();
         records.add(new Record("herCDN.com", "NSherCDN.com", "NS"));
-        records.add(new Record("NSherCDN.com", HisDNS_IP, "A"));
+        records.add(new Record("NSherCDN.com", HerDNS_IP, "A"));
         records.add(new Record("video.hiscinema.com", "hiscinema.com", "CNAME"));
         records.add(new Record("hiscinema.com", "NShiscinema.com", "NS"));
-        records.add(new Record("NShiscinema.com", HerDNS_IP, "A"));
+        records.add(new Record("NShiscinema.com", HisDNS_IP, "A"));
         orderRecords();
     }
 }

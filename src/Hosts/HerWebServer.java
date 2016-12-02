@@ -16,7 +16,7 @@ import java.nio.file.Paths;
  */
 public class HerWebServer {
 
-    private final static int PORT = 62222; //port listened to
+    private final static int PORT = 40080; //port listened to
 
     /**
      * Main method to instantiate HerCDN.com's Web Server
@@ -45,7 +45,7 @@ public class HerWebServer {
  */
 class HerHandleSocketRequest implements Runnable {
 
-    private final static int MAX_FILE_SIZE = 1024;
+    private final static int MAX_FILE_SIZE = 1024 * 128;
     private final Socket socket;
 
     /**
@@ -76,7 +76,9 @@ class HerHandleSocketRequest implements Runnable {
             inStream.read(receivedBytes);
             httpGet = new HTTPGet(receivedBytes);
 
-            fileBytes = getFileBytes(httpGet.getUrl());
+            System.out.println("\nReceived request:\n" + httpGet);
+            fileBytes = Files.readAllBytes(Paths.get("rsc/HerCDNContents/"
+                    + httpGet.getUrl()));
 
             if (fileBytes == null)
                 httpResponse = new HTTPResponse("HTTP/1.1", "404", "Not Found");
@@ -84,50 +86,12 @@ class HerHandleSocketRequest implements Runnable {
                 httpResponse = new HTTPResponse("HTTP/1.1", "200", "OK", fileBytes);
 
             outStream.write(httpResponse.getBytes());
-
+            System.out.println("\n\nSent response:\n" + httpResponse);
             outStream.close();
             inStream.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Looks through the files to find the requested file,
-     * if found reads and returns the byte array of the file.
-     *
-     * @param fileName file requested
-     * @return byte array of the file
-     */
-    public synchronized byte[] getFileBytes(String fileName) {
-        try {
-            switch (fileName) {
-                case "/F1":
-                    return Files.readAllBytes(
-                            Paths.get("rsc/HerCDNContents/file1.txt"));
-                case "/F2":
-                    return Files.readAllBytes(
-                            Paths.get("rsc/HerCDNContents/file2.txt"));
-                case "/F3":
-                    return Files.readAllBytes(
-                            Paths.get("rsc/HerCDNContents/file3.txt"));
-                case "/F4":
-                    return Files.readAllBytes(
-                            Paths.get("rsc/HerCDNContents/file4.txt"));
-                case "/F5":
-                    return Files.readAllBytes(
-                            Paths.get("rsc/HerCDNContents/file5.txt"));
-                default:
-                    System.out.println("Requested file " +
-                            fileName.substring(1) + " not found");
-                    return null;
-            }
-        } catch (IOException e) {
-            System.out.println("couldn't retrieve file. Error: \n");
-            e.printStackTrace();
-            return null;
-        }
-
     }
 }

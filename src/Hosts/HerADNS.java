@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class HerADNS {
 
     private final static int MAX_FILE_SIZE = 1024;
-    private static final int PORT = 62225;
+    private static final int PORT = 40082;
     private static ArrayList<Record> records;
     private static DNSQuery query;
 
@@ -41,6 +41,7 @@ public class HerADNS {
                 datagramPacket = new DatagramPacket(data, data.length);
                 datagramSocket.receive(datagramPacket);
                 query = new DNSQuery(data);
+                System.out.println("DNS Query RECEIVED: \n" + query);
                 datagramPacket = getDNSResponse(
                         datagramPacket.getAddress(),
                         datagramPacket.getPort());
@@ -64,6 +65,7 @@ public class HerADNS {
         for (Question q : query.getQues()) {
             recordsLookup(q.getName());
         }
+        System.out.println("DNS Query RETURNED: \n" + query);
         return query.getPacket(ip, port);
     }
 
@@ -76,48 +78,17 @@ public class HerADNS {
         for (Record r : findInRecords(name)) {
             switch (r.getType()) {
                 case "A":
-                    handleAQuery(r);
-                    break;
-                case "R":
-                    handleRQuery(r);
+                    query.addAnswer(r);
                     break;
                 case "CNAME":
-                    handleCNAMEQuery(r);
+                    query.addAnswer(r);
+                    recordsLookup(r.getValue());
                     break;
                 default:
                     System.out.println("Invalid type");
                     break;
             }
         }
-    }
-
-    /**
-     * Method to handle A query types
-     *
-     * @param r "A" record
-     */
-    public static void handleAQuery(Record r) {
-        query.addAnswer(r.getName(), r.getType(), r.getValue());
-    }
-
-    /**
-     * Method to handle CNAME query types
-     *
-     * @param r "CNAME" record
-     */
-    public static void handleCNAMEQuery(Record r) {
-        query.addAnswer(r.getName(), r.getType(), r.getValue());
-        recordsLookup(r.getValue());
-    }
-
-    /**
-     * Method to handle R query types
-     *
-     * @param r "R" Record
-     */
-    public static void handleRQuery(Record r) {
-        query.addAnswer(r);
-        recordsLookup(r.getValue());
     }
 
     /**
@@ -135,11 +106,11 @@ public class HerADNS {
                 rec.add(r);
         }
         for (Record r : records) {
-            if (r.getType().equals("CNAME"))
+            if (r.getType().equals("V"))
                 rec.add(r);
         }
         for (Record r : records) {
-            if (r.getType().equals("R"))
+            if (r.getType().equals("CNAME"))
                 rec.add(r);
         }
         for (Record r : records) {
@@ -163,7 +134,7 @@ public class HerADNS {
         ArrayList<Record> rs = new ArrayList<>();
 
         for (Record r : records) {
-            if (r.getName().equals(name))
+            if (r.getName().trim().equals(name.trim()))
                 rs.add(r);
         }
         return rs;

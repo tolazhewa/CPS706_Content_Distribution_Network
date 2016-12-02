@@ -2,10 +2,12 @@ package Hosts;
 
 import DNS.Answer;
 import DNS.DNSQuery;
+import DNS.Record;
 import HTTP.HTTPGet;
 import HTTP.HTTPResponse;
 import HTTP.Link;
 
+import java.awt.*;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -18,15 +20,15 @@ import java.util.Scanner;
  */
 public class ClientPC {
 
-    private final static int MAX_FILE_SIZE = 1024;
-    //HisCinema Web Server info
-    private final static int HWS_PORT = 62220;
-    private final static String HWS_IP = "127.0.0.1";
-    //Local DNS Server info
-    private final static int LDNS_PORT = 62221;
+    private final static int MAX_FILE_SIZE = 1024 * 128;
+    private final static int HWS_PORT = 40081; //TCP
+    private final static int HCDN_PORT = 40080; //TCP
+    private final static int LDNS_PORT = 40080; //UDP
     private final static String LDNS_IP = "127.0.0.1";
+    private final static String HWS_IP = "127.0.0.1";
+    private static ArrayList<String> files;
+    private static ArrayList<Record> records;
     //HerCDN.com Web Server info
-    private final static int HCDN_PORT = 62222;
 
     /**
      * Main function for the Hosts.ClientPC
@@ -34,17 +36,53 @@ public class ClientPC {
      * @param args usable arguments
      */
     public static void main(String args[]) {
-        File indexHTML;
-        ArrayList<Link> links;
+        instantiateRecords();
 
-        indexHTML = getFileFromServer("index.html", HWS_IP, HWS_PORT);
-        links = getLinksFromFile(indexHTML);
+        File indexHTML, curr;
+        ArrayList<Link> fileLinks;
+        String input;
+        Scanner inputScanner;
 
-        for(Link a: links) {
-            getFileFromServer(a.getExt(), dnsLookup(a.getUrl()), HCDN_PORT);
+        files = new ArrayList<>();
+        inputScanner = new Scanner(System.in);
+        indexHTML = getFileFromServer(
+                new Link("www.hiscinema.com/index.html\""), HWS_PORT);
+        fileLinks = getLinksFromFile(indexHTML);
+
+
+        while(true) {
+            showVideosMenu();
+            input = inputScanner.nextLine();
+            switch(input){
+                case "1":
+                    curr = getFileFromServer(fileLinks.get(0), HCDN_PORT);
+                    break;
+                case "2":
+                    curr = getFileFromServer(fileLinks.get(1), HCDN_PORT);
+                    break;
+                case "3":
+                    curr = getFileFromServer(fileLinks.get(2), HCDN_PORT);
+                    break;
+                case "4":
+                    curr = getFileFromServer(fileLinks.get(3), HCDN_PORT);
+                    break;
+                case "5":
+                    curr = getFileFromServer(fileLinks.get(4), HCDN_PORT);
+                    break;
+                case "q":
+                    return;
+                default:
+                    curr = null;
+                    System.out.println("Invalid Input!!");
+                    continue;
+            }
+            try {
+                Desktop.getDesktop().open(curr);
+            } catch (IOException e) {
+                System.out.println("File not found");
+                e.printStackTrace();
+            }
         }
-
-        System.out.println("All operations complete.\nGoodBye!");
     }
 
     /**
@@ -60,23 +98,25 @@ public class ClientPC {
         byte[] bytes;
 
         bytes = new byte[MAX_FILE_SIZE];
-        query = new DNSQuery(name, "A");
+        query = new DNSQuery(name, "V");
 
         try {
-            System.out.println("Sending DNS Query");
+            System.out.println("\n\n\n\nDNS Query Sent: \n\n\n\n" + query);
             dnsSocket = new DatagramSocket();
             dnsSocket.send(query.getPacket(LDNS_IP, LDNS_PORT));
+
             receivePacket = new DatagramPacket(bytes, bytes.length);
             dnsSocket.receive(receivePacket);
 
             query = new DNSQuery(bytes);
+            System.out.println("\n\n\n\nDNS Response Received: \n\n\n\n" + query);
 
             for (Answer a : query.getAns()) {
                 if (a.getType().equals("A")) {
                     return a.getValue();
                 }
             }
-            System.out.println("DNS Query did not return any results");
+
             return null;
 
         } catch (IOException e) {
@@ -117,14 +157,28 @@ public class ClientPC {
     }
 
     /**
+     * shows all the videos available to get
+     */
+    public static void showVideosMenu(){
+        System.out.println("1. Video #1");
+        System.out.println("2. Video #2");
+        System.out.println("3. Video #3");
+        System.out.println("4. Video #4");
+        System.out.println("5. Video #5");
+        System.out.println("q. exit");
+    }
+
+    /**
      * Retrieves file from a server given parameters
      *
-     * @param requestFile file requested
-     * @param IPAddress   IP Address of the server retrieved from
      * @param port        port used to access the server retrieved from
      * @return File requested
      */
-    public static File getFileFromServer(String requestFile, String IPAddress, int port) {
+    public static File getFileFromServer(Link link, int port) {
+        for(String f: files){
+            if(f.equals(getFileName(link.getExt())))
+                return new File("rsc/ClientPCContents/" + f);
+        }
         Socket socket;
         InputStream inStream;
         OutputStream outStream;
@@ -132,13 +186,29 @@ public class ClientPC {
         HTTPResponse httpResponse;
         byte[] receivedBytes, bytesToSend;
         File file;
+        String ip;
 
+        ip = null;
+        file = null;
+        socket = null;
         receivedBytes = new byte[MAX_FILE_SIZE];
-        httpGet = new HTTPGet("/" + requestFile);
-        bytesToSend = httpGet.getBytes();
 
         try {
-            socket = new Socket(IPAddress, port);
+            for(Record r: records){
+                if(r.getName().equals(link.getUrl()) && r.getType().equals("A"))
+                    ip = r.getValue();
+            }
+
+            if(ip == null)
+                ip = dnsLookup(link.getUrl());
+
+            if(ip == null)
+                return null;
+            System.out.println("IP: " + ip + " | Port: " +
+                    port + " | Looking for: " + getFileName(link.getExt()));
+            socket = new Socket(ip, port);
+            httpGet = new HTTPGet("/" + getFileName(link.getExt()));
+            bytesToSend = httpGet.getBytes();
 
             //initializing input and output for the Socket
             inStream = socket.getInputStream();
@@ -152,18 +222,20 @@ public class ClientPC {
 
             //repackaging the HTTP response from bytes
             httpResponse = new HTTPResponse(receivedBytes);
-
             //checking response
-            if(!checkResponse(httpResponse.getStatusCode())){
+            if (!checkResponse(httpResponse.getStatusCode())) {
                 return null;
             }
+            System.out.println("File Received: " + httpGet.getUrl());
 
-            file = createFile(requestFile, httpResponse.getData());
+            file = createFile(getFileName(link.getExt()), httpResponse.getData());
+            files.add(getFileName(link.getExt()));
+            socket.close();
             return file;
 
         } catch (IOException e) {
-            System.out.println("Connection to the web server [" + IPAddress
-                    + " | " + port + "] failed... \n");
+            System.out.println("Connection to the web server [" +
+                    socket.getInetAddress() + " | " + port + "] failed... \n");
             e.printStackTrace();
             return null;
         }
@@ -224,6 +296,39 @@ public class ClientPC {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Gives the name of the file based on ext
+     *
+     * @param ext extention
+     * @return file name
+     */
+    public static String getFileName(String ext){
+        switch (ext) {
+            case "F1":
+                return "File1.txt";
+            case "F2":
+                return "File2.txt";
+            case "F3":
+                return "File3.txt";
+            case "F4":
+                return "File4.txt";
+            case "F5":
+                return "File5.txt";
+            case "index.html":
+                return "index.html";
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * adds all the preloaded records into the ArrayList
+     */
+    public static void instantiateRecords() {
+        records = new ArrayList<>();
+        records.add(new Record("www.hiscinema.com", HWS_IP, "A"));
     }
 
 }

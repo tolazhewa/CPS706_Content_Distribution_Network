@@ -62,7 +62,7 @@ public class DNSQuery {
 
         //getting all the information from the bytes
         transactionID = getShortFromTwoBytes(content[0], content[1]);
-        flags = getIntFromFourBytes(content[2], content[3],
+        flags = getIntFromFourBytes((byte)0, (byte)0,
                 content[4], content[5]);
         questions = getShortFromTwoBytes(content[6], content[7]);
         answerRRs = getShortFromTwoBytes(content[8], content[9]);
@@ -119,7 +119,6 @@ public class DNSQuery {
                 name += (char) content[i];
             }
             i++;
-            name += '\0';
             type = getTypeString(getShortFromTwoBytes(content[i],
                     content[i + 1]));
             i += 2;
@@ -246,7 +245,7 @@ public class DNSQuery {
         answer[answerRRs - 1] = new Answer(name,type,aClass,TTL,dataLength,value);
         ans = answer;
 
-        flags |= 0x8080; // turns on the response bit and recursion available bit
+        flags |= 0x00008080; // turns on the response bit and recursion available bit
     }
 
     /**
@@ -300,7 +299,7 @@ public class DNSQuery {
         authority[authorityRRs - 1] = new Authority(name, type, aClass, TTL, dataLength, value);
         auth = authority;
 
-        flags |= 0x8080; // turns on the response bit and recursion available bit
+        flags |= 0x00008080; // turns on the response bit and recursion available bit
     }
 
     /**
@@ -417,7 +416,7 @@ public class DNSQuery {
             case 6:
                 return "SOA";
             case 9:
-                return "R";
+                return "V";
             case 15:
                 return "MX";
             case 26:

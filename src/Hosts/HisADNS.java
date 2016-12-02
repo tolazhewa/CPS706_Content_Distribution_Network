@@ -16,9 +16,12 @@ import java.util.ArrayList;
 public class HisADNS {
 
     private final static int MAX_FILE_SIZE = 1024;
-    private static final int PORT = 62224;
+    private final static String HerDNS_IP = "127.0.0.1";
+    private static final int PORT = 40081;
     private static ArrayList<Record> records;
     private static DNSQuery query;
+
+
 
     /**
      * Main method that instantiates hiscinema.com's Authoritative DNS
@@ -41,6 +44,7 @@ public class HisADNS {
                 datagramPacket = new DatagramPacket(data, data.length);
                 datagramSocket.receive(datagramPacket);
                 query = new DNSQuery(data);
+                System.out.println("DNS Query RECEIVED:\n" + query);
                 datagramPacket = getDNSResponse(
                         datagramPacket.getAddress(),
                         datagramPacket.getPort());
@@ -64,6 +68,7 @@ public class HisADNS {
         for (Question q : query.getQues()) {
             recordsLookup(q.getName());
         }
+        System.out.println("DNS Query RETURNED: \n" + query);
         return query.getPacket(ip, port);
     }
 
@@ -76,48 +81,25 @@ public class HisADNS {
         for (Record r : findInRecords(name)) {
             switch (r.getType()) {
                 case "A":
-                    handleAQuery(r);
+                    query.addAnswer(r);
                     break;
-                case "R":
-                    handleRQuery(r);
+                case "V":
+                    recordsLookup(r.getValue());
                     break;
                 case "CNAME":
-                    handleCNAMEQuery(r);
+                    query.addAnswer(r);
+                    recordsLookup(r.getValue());
+                    break;
+                case "NS":
+                    query.addAuthority(r);
+
+                    recordsLookup(r.getValue());
                     break;
                 default:
                     System.out.println("Invalid type");
                     break;
             }
         }
-    }
-
-    /**
-     * Method to handle A query types
-     *
-     * @param r "A" record
-     */
-    public static void handleAQuery(Record r) {
-        query.addAnswer(r.getName(), r.getType(), r.getValue());
-    }
-
-    /**
-     * Method to handle CNAME query types
-     *
-     * @param r "CNAME" record
-     */
-    public static void handleCNAMEQuery(Record r) {
-        query.addAnswer(r.getName(), r.getType(), r.getValue());
-        recordsLookup(r.getValue());
-    }
-
-    /**
-     * Method to handle R query types
-     *
-     * @param r "R" Record
-     */
-    public static void handleRQuery(Record r) {
-        query.addAnswer(r);
-        recordsLookup(r.getValue());
     }
 
     /**
@@ -139,7 +121,7 @@ public class HisADNS {
                 rec.add(r);
         }
         for (Record r : records) {
-            if (r.getType().equals("R"))
+            if (r.getType().equals("V"))
                 rec.add(r);
         }
         for (Record r : records) {
@@ -163,7 +145,7 @@ public class HisADNS {
         ArrayList<Record> rs = new ArrayList<>();
 
         for (Record r : records) {
-            if (r.getName().equals(name))
+            if (r.getName().trim().equals(name.trim()))
                 rs.add(r);
         }
         return rs;
@@ -174,7 +156,9 @@ public class HisADNS {
      */
     public static void instantiateRecords() {
         records = new ArrayList<>();
-        records.add(new Record("video.hiscinema.com", "herCDN.com", "R"));
+        records.add(new Record("video.hiscinema.com", "herCDN.com", "V"));
+        records.add(new Record("herCDN.com", "NSherCDN.com", "NS"));
+        records.add(new Record("NSherCDN.com", HerDNS_IP, "A"));
         orderRecords();
     }
 }

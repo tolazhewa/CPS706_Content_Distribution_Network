@@ -16,7 +16,7 @@ import java.nio.file.Paths;
  */
 public class HisWebServer {
 
-    public final static int PORT = 62220; //port listened to
+    public final static int PORT = 40081; //port listened to
 
     /**
      * Main method to instantiate HerCDN.com's Web Server
@@ -45,7 +45,7 @@ public class HisWebServer {
  */
 class HisHandleSocketRequest implements Runnable {
 
-    public final static int MAX_FILE_SIZE = 1024;
+    public final static int MAX_FILE_SIZE = 1024 * 128;
     private final Socket socket;
 
     /**
@@ -76,6 +76,7 @@ class HisHandleSocketRequest implements Runnable {
             inStream.read(receivedBytes);
             httpGet = new HTTPGet(receivedBytes);
 
+            System.out.println("\n\nReceived request:\n" + httpGet);
             fileBytes = getFileBytes(httpGet.getUrl());
 
             if (fileBytes == null)
@@ -84,6 +85,7 @@ class HisHandleSocketRequest implements Runnable {
                 httpResponse = new HTTPResponse("HTTP/1.1", "200", "OK", fileBytes);
 
             outStream.write(httpResponse.getBytes());
+            System.out.println("\nSent response:\n" + httpResponse);
 
             outStream.close();
             inStream.close();
