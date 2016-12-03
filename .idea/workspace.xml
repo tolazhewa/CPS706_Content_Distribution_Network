@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="21126d95-e23f-4d14-9cf3-5c08ef2a630f" name="Default" comment="V1: all functionality required so far added&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/ClientPCContents/File1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/ClientPCContents/File2.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/ClientPCContents/File3.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/ClientPCContents/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Answer.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Answer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Authority.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Authority.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/DNSQuery.class" afterPath="$PROJECT_DIR$/out/Production/DNS/DNSQuery.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/DNS/Question.class" afterPath="$PROJECT_DIR$/out/Production/DNS/Question.class" />
+    <list default="true" id="21126d95-e23f-4d14-9cf3-5c08ef2a630f" name="Default" comment="V2: Added proper transfer functionalities">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/HerCDNContents/File2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/HerCDNContents/File3.wmv" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/HerCDNContents/File4.mov" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rsc/HerCDNContents/File2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rsc/HerCDNContents/File3.wmv" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rsc/HerCDNContents/File4.mov" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/Production/ClientPCContents/CLIENT_DIRECTORY" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/Production/ClientPCContents/File1.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/Production/ClientPCContents/File3.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rsc/HerCDNContents/File2.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rsc/HerCDNContents/File3.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rsc/HerCDNContents/File4.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/HTTPGet.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/HTTPGet.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/HTTPResponse.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/HTTPResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/Link.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/Link.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/ClientLocalDNS.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/ClientLocalDNS.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HTTP/HeaderLine.class" afterPath="$PROJECT_DIR$/out/Production/HTTP/HeaderLine.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/ClientPC.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/ClientPC.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HerADNS.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HerADNS.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HerHandleSocketRequest.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HerHandleSocketRequest.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HerWebServer.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HerWebServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HisADNS.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HisADNS.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HisHandleSocketRequest.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HisHandleSocketRequest.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/Hosts/HisWebServer.class" afterPath="$PROJECT_DIR$/out/Production/Hosts/HisWebServer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Answer.java" afterPath="$PROJECT_DIR$/src/DNS/Answer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Authority.java" afterPath="$PROJECT_DIR$/src/DNS/Authority.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/DNSQuery.java" afterPath="$PROJECT_DIR$/src/DNS/DNSQuery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DNS/Question.java" afterPath="$PROJECT_DIR$/src/DNS/Question.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java" afterPath="$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Production/HerCDNContents/File3.txt" afterPath="$PROJECT_DIR$/out/Production/HerCDNContents/File3.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HTTP/HTTPGet.java" afterPath="$PROJECT_DIR$/src/HTTP/HTTPGet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HTTP/HTTPResponse.java" afterPath="$PROJECT_DIR$/src/HTTP/HTTPResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HTTP/HeaderLine.java" afterPath="$PROJECT_DIR$/src/HTTP/HeaderLine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/ClientPC.java" afterPath="$PROJECT_DIR$/src/Hosts/ClientPC.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HerADNS.java" afterPath="$PROJECT_DIR$/src/Hosts/HerADNS.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HerWebServer.java" afterPath="$PROJECT_DIR$/src/Hosts/HerWebServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HisADNS.java" afterPath="$PROJECT_DIR$/src/Hosts/HisADNS.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Hosts/HisWebServer.java" afterPath="$PROJECT_DIR$/src/Hosts/HisWebServer.java" />
     </list>
     <ignored path="cps706_project.iws" />
@@ -51,12 +49,51 @@
     <favorites_list name="cps706_project" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="CLIENT_DIRECTORY" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/rsc/ClientPCContents/CLIENT_DIRECTORY">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ClientPC.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Hosts/ClientPC.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="4.3047338">
+              <caret line="271" column="28" selection-start-line="271" selection-start-column="28" selection-end-line="271" selection-end-column="28" />
+              <folding>
+                <element signature="docComment;class#ClientPC#0" expanded="false" />
+                <element signature="docComment;method#main#0;class#ClientPC#0" expanded="false" />
+                <element signature="docComment;method#dnsLookup#0;class#ClientPC#0" expanded="false" />
+                <element signature="method#dnsLookup#0;class#ClientPC#0" expanded="false" />
+                <element signature="docComment;method#getLinksFromFile#0;class#ClientPC#0" expanded="false" />
+                <element signature="docComment;method#showVideosMenu#0;class#ClientPC#0" expanded="false" />
+                <element signature="method#showVideosMenu#0;class#ClientPC#0" expanded="false" />
+                <element signature="docComment;method#getFileFromServer#0;class#ClientPC#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HisWebServer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Hosts/HisWebServer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="84" column="16" selection-start-line="84" selection-start-column="16" selection-end-line="84" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HerWebServer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Hosts/HerWebServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="26" column="12" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HTTPResponse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/HTTP/HTTPResponse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="106" column="41" selection-start-line="106" selection-start-column="41" selection-end-line="106" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -109,10 +146,7 @@
         <option value="$PROJECT_DIR$/rsc/HisCinemaContents/index.html" />
         <option value="$PROJECT_DIR$/src/Misc/Link.java" />
         <option value="$PROJECT_DIR$/rsc/ClientPCContents/F3" />
-        <option value="$PROJECT_DIR$/src/HTTP/HeaderLine.java" />
         <option value="$PROJECT_DIR$/src/HTTP/Link.java" />
-        <option value="$PROJECT_DIR$/src/HTTP/HTTPResponse.java" />
-        <option value="$PROJECT_DIR$/src/HTTP/HTTPGet.java" />
         <option value="$PROJECT_DIR$/src/DNS/Question.java" />
         <option value="$PROJECT_DIR$/src/DNS/Answer.java" />
         <option value="$PROJECT_DIR$/src/DNS/Authority.java" />
@@ -120,10 +154,14 @@
         <option value="$PROJECT_DIR$/src/DNS/DNSQuery.java" />
         <option value="$PROJECT_DIR$/src/Hosts/HerADNS.java" />
         <option value="$PROJECT_DIR$/src/Hosts/HisADNS.java" />
-        <option value="$PROJECT_DIR$/src/Hosts/HisWebServer.java" />
         <option value="$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java" />
-        <option value="$PROJECT_DIR$/src/Hosts/ClientPC.java" />
+        <option value="$PROJECT_DIR$/src/HTTP/HTTPGet.java" />
+        <option value="$PROJECT_DIR$/src/HTTP/HeaderLine.java" />
+        <option value="$PROJECT_DIR$/rsc/ClientPCContents/index.html" />
+        <option value="$PROJECT_DIR$/src/HTTP/HTTPResponse.java" />
+        <option value="$PROJECT_DIR$/src/Hosts/HisWebServer.java" />
         <option value="$PROJECT_DIR$/src/Hosts/HerWebServer.java" />
+        <option value="$PROJECT_DIR$/src/Hosts/ClientPC.java" />
       </list>
     </option>
   </component>
@@ -156,7 +194,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -225,6 +262,7 @@
       </pane>
       <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -244,46 +282,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.ClientPC">
-    <configuration default="false" name="HerADNS" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="Hosts.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="Hosts.HerADNS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="cps706_project" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="HerWebServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="Hosts.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="Hosts.HerWebServer" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="cps706_project" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="false" name="HisADNS" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -312,6 +310,46 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="Hosts.HisWebServer" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="cps706_project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="ClientLocalDNS" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="Hosts.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="Hosts.ClientLocalDNS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="cps706_project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="HerWebServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="Hosts.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="Hosts.HerWebServer" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -589,19 +627,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Application.HerADNS" />
-      <item index="1" class="java.lang.String" itemvalue="Application.HerWebServer" />
-      <item index="2" class="java.lang.String" itemvalue="Application.HisADNS" />
-      <item index="3" class="java.lang.String" itemvalue="Application.HisWebServer" />
+      <item index="0" class="java.lang.String" itemvalue="Application.HisADNS" />
+      <item index="1" class="java.lang.String" itemvalue="Application.HisWebServer" />
+      <item index="2" class="java.lang.String" itemvalue="Application.ClientLocalDNS" />
+      <item index="3" class="java.lang.String" itemvalue="Application.HerWebServer" />
       <item index="4" class="java.lang.String" itemvalue="Application.ClientPC" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Application.ClientPC" />
-        <item index="1" class="java.lang.String" itemvalue="Application.HisWebServer" />
-        <item index="2" class="java.lang.String" itemvalue="Application.HisADNS" />
-        <item index="3" class="java.lang.String" itemvalue="Application.HerWebServer" />
-        <item index="4" class="java.lang.String" itemvalue="Application.HerADNS" />
+        <item index="1" class="java.lang.String" itemvalue="Application.HerWebServer" />
+        <item index="2" class="java.lang.String" itemvalue="Application.HisWebServer" />
+        <item index="3" class="java.lang.String" itemvalue="Application.ClientLocalDNS" />
+        <item index="4" class="java.lang.String" itemvalue="Application.HisADNS" />
       </list>
     </recent_temporary>
   </component>
@@ -656,7 +694,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970452" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38920453" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -714,7 +752,8 @@
     <MESSAGE value="Add HTTP files" />
     <MESSAGE value="Add webserver functionalities&#10;" />
     <MESSAGE value="V1: all functionality required so far added&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="V1: all functionality required so far added&#10;" />
+    <MESSAGE value="V2: Added proper transfer functionalities" />
+    <option name="LAST_COMMIT_MESSAGE" value="V2: Added proper transfer functionalities" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -730,39 +769,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Hosts/ClientPC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="70" column="45" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Hosts/ClientLocalDNS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DNS/DNSQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Hosts/HerWebServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -903,27 +909,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rsc/HerCDNContents/File2.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="347" selection-start-line="0" selection-start-column="347" selection-end-line="0" selection-end-column="347" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rsc/HerCDNContents/File3.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.015806112">
-          <caret line="1" column="301" selection-start-line="1" selection-start-column="301" selection-end-line="1" selection-end-column="301" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rsc/HerCDNContents/File4.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="347" selection-start-line="0" selection-start-column="347" selection-end-line="0" selection-end-column="347" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/src.zip!/java/io/File.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33238637">
@@ -966,22 +951,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/HTTP/HTTPGet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="7.295285">
-          <caret line="202" column="7" selection-start-line="202" selection-start-column="7" selection-end-line="202" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HTTP/HTTPResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11166253">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DNS/Answer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8">
@@ -1019,19 +988,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/HTTP/Link.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5597015">
-          <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/src.zip!/java/util/function/Consumer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="48" column="9" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1061,40 +1021,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Hosts/HerWebServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5310651">
-          <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Hosts/ClientPC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2855029">
-          <caret line="237" column="46" selection-start-line="237" selection-start-column="46" selection-end-line="237" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HTTP/HeaderLine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7781065">
-          <caret line="44" column="38" selection-start-line="44" selection-start-column="38" selection-end-line="44" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Hosts/HisWebServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6863905">
-          <caret line="87" column="34" selection-start-line="87" selection-start-column="34" selection-end-line="87" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Hosts/HisADNS.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15532544">
@@ -1108,6 +1034,87 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/src.zip!/java/io/BufferedOutputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="127" column="0" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/src.zip!/java/net/AbstractPlainDatagramSocketImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HTTP/HeaderLine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.4552239">
+          <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HTTP/HTTPGet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="6.2686567">
+          <caret line="168" column="30" selection-start-line="168" selection-start-column="30" selection-end-line="168" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HTTP/Link.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.15671642">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HTTP/HTTPResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="106" column="41" selection-start-line="106" selection-start-column="41" selection-end-line="106" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Hosts/HisWebServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="16" selection-start-line="84" selection-start-column="16" selection-end-line="84" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Hosts/HerWebServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="12" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Hosts/ClientPC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.3047338">
+          <caret line="271" column="28" selection-start-line="271" selection-start-column="28" selection-end-line="271" selection-end-column="28" />
+          <folding>
+            <element signature="docComment;class#ClientPC#0" expanded="false" />
+            <element signature="docComment;method#main#0;class#ClientPC#0" expanded="false" />
+            <element signature="docComment;method#dnsLookup#0;class#ClientPC#0" expanded="false" />
+            <element signature="method#dnsLookup#0;class#ClientPC#0" expanded="false" />
+            <element signature="docComment;method#getLinksFromFile#0;class#ClientPC#0" expanded="false" />
+            <element signature="docComment;method#showVideosMenu#0;class#ClientPC#0" expanded="false" />
+            <element signature="method#showVideosMenu#0;class#ClientPC#0" expanded="false" />
+            <element signature="docComment;method#getFileFromServer#0;class#ClientPC#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

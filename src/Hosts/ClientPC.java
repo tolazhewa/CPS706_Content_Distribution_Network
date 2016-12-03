@@ -5,6 +5,7 @@ import DNS.DNSQuery;
 import DNS.Record;
 import HTTP.HTTPGet;
 import HTTP.HTTPResponse;
+import HTTP.HeaderLine;
 import HTTP.Link;
 
 import java.awt.*;
@@ -20,7 +21,7 @@ import java.util.Scanner;
  */
 public class ClientPC {
 
-    private final static int MAX_FILE_SIZE = 1024 * 128;
+    private final static int MAX_FILE_SIZE = 1024 * 4;
     private final static int HWS_PORT = 40081; //TCP
     private final static int HCDN_PORT = 40080; //TCP
     private final static int LDNS_PORT = 40080; //UDP
@@ -72,7 +73,6 @@ public class ClientPC {
                 case "q":
                     return;
                 default:
-                    curr = null;
                     System.out.println("Invalid Input!!");
                     continue;
             }
@@ -182,20 +182,23 @@ public class ClientPC {
         Socket socket;
         InputStream inStream;
         OutputStream outStream;
+        BufferedOutputStream bos;
         HTTPGet httpGet;
         HTTPResponse httpResponse;
         byte[] receivedBytes, bytesToSend;
         File file;
         String ip;
+        int fileLength, current;
 
         ip = null;
-        file = null;
         socket = null;
+        fileLength = 0;
         receivedBytes = new byte[MAX_FILE_SIZE];
 
         try {
             for(Record r: records){
-                if(r.getName().equals(link.getUrl()) && r.getType().equals("A"))
+                if (r.getName().equals(link.getUrl()) &&
+                        r.getType().equals("A"))
                     ip = r.getValue();
             }
 
@@ -216,19 +219,52 @@ public class ClientPC {
 
             //sending the GET packet
             outStream.write(bytesToSend);
+            outStream.flush();
 
             //Getting response
             inStream.read(receivedBytes);
+
+            //Acknowledgement
+            outStream.write("ACK".getBytes());
+            outStream.flush();
 
             //repackaging the HTTP response from bytes
             httpResponse = new HTTPResponse(receivedBytes);
             //checking response
             if (!checkResponse(httpResponse.getStatusCode())) {
+                outStream.close();
+                inStream.close();
+                socket.close();
                 return null;
             }
+            System.out.println("RESPONSE: \n" + httpResponse +
+                    "\n END RESPONSE");
+
+            for (HeaderLine h : httpResponse.getHeaderLines()) {
+                if (h.getName().equals("Content-Length"))
+                    fileLength = Integer.parseInt(h.getValue());
+            }
+
+            //create byte array size of length
+            receivedBytes = new byte[fileLength];
+            //create file
+            file = new File("rsc/ClientPCContents/" +
+                    getFileName(link.getExt()));
+            if (!file.exists())
+                file.createNewFile();
+            //BOS for file
+            bos = new BufferedOutputStream(new FileOutputStream(file));
+
+            for (current = 0; current < fileLength - 1024 * 16; current += 1024 * 16) {
+                inStream.read(receivedBytes, current, 1024 * 16);
+                bos.write(receivedBytes, current, 1024 * 16);
+            }
+            inStream.read(receivedBytes, current, fileLength - current);
+            bos.write(receivedBytes, current, fileLength - current);
+
+            bos.flush();
             System.out.println("File Received: " + httpGet.getUrl());
 
-            file = createFile(getFileName(link.getExt()), httpResponse.getData());
             files.add(getFileName(link.getExt()));
             socket.close();
             return file;
@@ -272,33 +308,6 @@ public class ClientPC {
     }
 
     /**
-     * Creates file based on given content (in bytes)
-     *
-     * @param fileName name of the file being created
-     * @param fileContent content in bytes
-     * @return file made up of the given bytes
-     */
-    public static File createFile(String fileName, byte[] fileContent){
-        File file;
-        FileOutputStream fileOutStream;
-
-        try {
-            file = new File("rsc/ClientPCContents/" + fileName);
-            file.createNewFile();
-
-            fileOutStream = new FileOutputStream(file);
-            fileOutStream.write(fileContent);
-            fileOutStream.close();
-
-            return file;
-        } catch(IOException e){
-            System.out.println("Unable to create file");
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
      * Gives the name of the file based on ext
      *
      * @param ext extention
@@ -309,11 +318,11 @@ public class ClientPC {
             case "F1":
                 return "File1.txt";
             case "F2":
-                return "File2.txt";
+                return "File2.png";
             case "F3":
-                return "File3.txt";
+                return "File3.wmv";
             case "F4":
-                return "File4.txt";
+                return "File4.mov";
             case "F5":
                 return "File5.txt";
             case "index.html":

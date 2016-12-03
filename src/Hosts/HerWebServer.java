@@ -3,13 +3,9 @@ package Hosts;
 import HTTP.HTTPGet;
 import HTTP.HTTPResponse;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * HerCND.com's WebServer
@@ -45,7 +41,7 @@ public class HerWebServer {
  */
 class HerHandleSocketRequest implements Runnable {
 
-    private final static int MAX_FILE_SIZE = 1024 * 128;
+    private final static int MAX_FILE_SIZE = 1024 * 4;
     private final Socket socket;
 
     /**
@@ -65,7 +61,10 @@ class HerHandleSocketRequest implements Runnable {
         OutputStream outStream;
         HTTPGet httpGet;
         HTTPResponse httpResponse;
+        BufferedInputStream bis;
+        int current;
         byte[] receivedBytes, fileBytes;
+        File file;
 
         receivedBytes = new byte[MAX_FILE_SIZE];
 
@@ -76,17 +75,35 @@ class HerHandleSocketRequest implements Runnable {
             inStream.read(receivedBytes);
             httpGet = new HTTPGet(receivedBytes);
 
-            System.out.println("\nReceived request:\n" + httpGet);
-            fileBytes = Files.readAllBytes(Paths.get("rsc/HerCDNContents/"
-                    + httpGet.getUrl()));
+            System.out.println("\n\nReceived request:\n" + httpGet);
 
-            if (fileBytes == null)
+            file = new File("rsc/HerCDNContents" + httpGet.getUrl());
+            bis = new BufferedInputStream(new FileInputStream(file));
+
+            if (!file.exists()) {
                 httpResponse = new HTTPResponse("HTTP/1.1", "404", "Not Found");
-            else
-                httpResponse = new HTTPResponse("HTTP/1.1", "200", "OK", fileBytes);
+                outStream.write(httpResponse.getBytes());
+                outStream.flush();
+            } else {
+                httpResponse = new HTTPResponse("HTTP/1.1", "200", "OK");
+                fileBytes = new byte[(int) file.length()];
+                bis.read(fileBytes, 0, fileBytes.length);
+                httpResponse.addHeaderLine("Content-Length", Integer.toString(fileBytes.length));
 
-            outStream.write(httpResponse.getBytes());
-            System.out.println("\n\nSent response:\n" + httpResponse);
+                outStream.write(httpResponse.getBytes());
+                outStream.flush();
+
+                System.out.println("\nSent response:\n" + httpResponse);
+
+                inStream.read();
+
+                for (current = 0; current < fileBytes.length - 1024 * 16; current += 1024 * 16) {
+                    outStream.write(fileBytes, current, 1024 * 16);
+                }
+                outStream.write(fileBytes, current, fileBytes.length - current);
+                outStream.flush();
+            }
+
             outStream.close();
             inStream.close();
             socket.close();

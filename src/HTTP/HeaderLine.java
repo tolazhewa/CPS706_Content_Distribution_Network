@@ -43,6 +43,6 @@ public class HeaderLine {
      */
     public String toString() {
         return this.getName() + ": " +
-                this.getValue() + "\\r\\n";
+                this.getValue() + "\\r\\n\n";
     }
 }

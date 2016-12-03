@@ -164,7 +164,7 @@ public class HTTPGet {
 
         a = this.getMethod() + " " +
                 this.getUrl() + " " +
-                this.getVersion() + "\\r\\n";
+                this.getVersion() + "\\r\\n\n";
         for(HeaderLine h: getHeaderLines()){
             a += h.toString();
         }

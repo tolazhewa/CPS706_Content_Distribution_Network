@@ -101,6 +101,16 @@ public class HTTPResponse {
     }
 
     /**
+     * Adds a header line
+     *
+     * @param name  name (property) of the header
+     * @param value value of the property
+     */
+    public void addHeaderLine(String name, String value) {
+        this.headerLines.add(new HeaderLine(name, value));
+    }
+
+    /**
      * retrieves byte representation of the HTTP response
      *
      * @return byte representation
@@ -156,11 +166,11 @@ public class HTTPResponse {
 
         a = this.getRequestVersion() + " " +
                 this.getStatusCode() + " " +
-                this.getResponsePhrase() + "\\r\\n";
+                this.getResponsePhrase() + "\\r\\n\n";
         for (HeaderLine h : this.getHeaderLines()) {
-            a += h.getName() + ": " + h.getValue() + "\\r\\n";
+            a += h.toString();
         }
-        a += "\n\\r\\n\n";
+        a += "\\r\\n\n";
         a += new String(this.getData());
         return a;
     }
