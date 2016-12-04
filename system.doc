@@ -1,0 +1,33 @@
+CPS706 - Project - Group 9
+
+There exists in this project a resources directory (rsc), an HTTP directory, DNS directory directory, and a assortment of java files representing the hosts. 
+
+In the resources directory (rsc), there exists three folder that represent the resource available to their respective hosts. HerCDNContents is the resources available to HerCDN. HisCinemaContents is the resources available to HisCinema web server. And finally, ClientPCContents contains all the files delivered from the servers.
+
+The DNS folder contains the java files needed to produce DNSQuery packages and record types. These are used between Client PC, Local DNS Server, and ADNS servers to communicate messages.
+
+The HTTP folder contains the java files needed to produce HTTP GET and HTTP Response packages. These files/classes are used between Client PC, HisWebServer, and HerCDN Server to communicate and send info.
+
+The main functionalities representing each hosts are implemented in the following files:
+
+1. ClientPC.java : Client's Personal Computer
+2. ClientLocalDNS.java : Client's Local DNS Server
+3. HisADNS.java : HisCinema's Authoritative DNS Server
+4. HerADNS.java : HerCDN's Authoritative DNS Server
+5. HisWebServer.java : HisCinema's Web Server
+6. HerWebServer.java : HerCDN's Web Server
+
+The functionalities are implement and can be executed by doing the following:
+
+1. Compile all the files: javac *.java
+2. Run the procedure
+	a) Run ClientLocalDNS: $ java ClientLocalDNS
+	b) Run HisADNS: $ java HisADNS
+	c) Run HerADNS: $ java HerADNS
+	d) Run HisWebServer: $ java HisWebServer
+	e) Run HerWebServer: $ java HerWebServer
+	f) Run ClientPC: $ java ClientPC
+3. Select the file wanted 
+4. Enjoy your videos!
+
+END OF FILE
